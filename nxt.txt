@@ -60,3 +60,5 @@ npm i react-datepicker --force
 
 A new version of `create-next-app` is available!
 pm i -g create-next-app
+
+npm update
