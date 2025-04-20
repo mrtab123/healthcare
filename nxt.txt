@@ -1,0 +1,62 @@
+NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/mrtabs
+NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY=public_iyaOSGvzEzeJpgoIGA7jjv0UbZg=
+IMAGEKIT_PRIVATE_KEY=private_7DNA4krycGLaLSY6r0k5WRnmDH8=
+
+
+
+
+DATABASE_URL=postgresql://healthcare_owner:npg_KYxNf4T5LukD@ep-super-paper-a1w2prwi-pooler.ap-southeast-1.aws.neon.tech/healthcare?sslmode=require
+
+
+
+NEXT_PUBLIC_API_ENDPOINT=http://localhost:3000
+
+
+CLERK_SECRET_KEY=sk_test_6J0cLQsWYpSRrO7hb8ICHoUPLpsReaN0qjhqVcnf9z
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_dW5iaWFzZWQtY3Jvdy01OC5jbGVyay5hY2NvdW50cy5kZXYk
+
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+
+
+
+
+npm install @clerk/nextjs
+
+npm install react-hot-toast --force
+
+npm install prisma --force
+
+npm i drizzle-orm
+npm i -D drizzle-kit
+npm i @neondatabase/serverless
+npm i dotenv
+npx drizzle-kit generate
+npx drizzle-kit migrate
+npm run db:studio
+'@neondatabase/serverless' can only connect to remote Neon/Vercel Postgres/Supabase instances through a websocket
+
+
+Implement basic Role Based Access Control (RBAC) with metadata
+https://clerk.com/docs/references/nextjs/basic-rbac
+
+
+updated
+NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/mrtabs
+NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY=public_iyaOSGvzEzeJpgoIGA7jjv0UbZg=
+IMAGEKIT_PRIVATE_KEY=private_7DNA4krycGLaLSY6r0k5WRnmDH8=
+
+DATABASE_URL=postgresql://mpd_deployment_owner:npg_T5wsc1EHnGbK@ep-shy-mountain-a1s1ubes-pooler.ap-southeast-1.aws.neon.tech/mpd_deployment?sslmode=require
+NEXT_PUBLIC_API_ENDPOINT=http://localhost:3000
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_ZXF1YWwtY3JpY2tldC04OS5jbGVyay5hY2NvdW50cy5kZXYk
+CLERK_SECRET_KEY=sk_test_GF3JHs49tNWOMYQHYrWyliWDzOxcvmFYhzZXulLHtH
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+
+npm install react-hook-form@latest @hookform/resolvers@latest
+
+
+npm i react-datepicker --force
+
+A new version of `create-next-app` is available!
+pm i -g create-next-app
