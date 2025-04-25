@@ -1,3 +1,4 @@
+import { StatSummary } from '@/components/charts/stat-summary';
 import { StatCard } from '@/components/stat-card';
 import { Button } from '@/components/ui/button';
 import { getPatientDashboardStatistics } from '@/utils/services/patient';
@@ -91,12 +92,29 @@ console.log(data);
         </div>
 
 
+        <div className="h-[500px]">
+          {/* <AppointmentChart data={monthlyData} /> */}
+        </div>
+
+        <div className="bg-white rounded-xl p-4 mt-8">
+          {/* <RecentAppointments data={last5Records} /> */}
+        </div>
+
        
       </div>
 
 
  {/* RIGHT */}
-    
+ <div className="w-full xl:w-[30%]">
+        <div className="w-full h-[450px] mb-8">
+          <StatSummary data={appointmentCounts} total={totalAppointments} />
+        </div>
+
+        {/* <AvailableDoctors data={availableDoctor as AvailableDoctorProps} />
+
+        <PatientRatingContainer /> */}
+      </div>
+   
 
 
 
