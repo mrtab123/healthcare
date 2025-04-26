@@ -4,8 +4,9 @@ import { appointments, doctors, patients, workingDays } from "@/database/schema"
 import { eq, desc, ilike } from "drizzle-orm";
 import { getMonth, format, startOfYear, endOfMonth, isToday } from "date-fns";
 import { daysOfWeek } from "..";
+import { time } from "console";
 
-type AppointmentStatus = "pending" | "scheduled" | "completed" | "cancelled";
+type  AppointmentStatus = "pending" | "scheduled" | "completed" | "cancelled";
 
 function isValidStatus(status: string): status is AppointmentStatus {
   return ["pending", "scheduled", "completed", "cancelled"].includes(status);
@@ -84,6 +85,7 @@ export const processAppointments = async (appointments: Appointment[]) => {
 
         if (status === "completed") {
           monthlyData[monthIndex].completed += 1;
+         
         }
       }
 
@@ -129,44 +131,91 @@ export async function getPatientDashboardStatistics(id: string) {
       };
     }
 
-    // const appointment = (await db.select().from(appointments).where(eq(appointments.id, data[0]?.id)).limit(10)
-    //   .orderBy(desc(appointments.created_at)));
 
 
-    const appointment = await db.select().from(appointments)
+
+
+    const appointment = await db.select(
+      {
+        id: appointments.id,
+        status: appointments.status,
+        appointment_date: appointments.appointment_date,
+        time: appointments.time,
+        // doctor_id: appointments.doctor_id,
+        // patient_id: appointments.patient_id,
+        doctor: {
+          id: doctors.id,
+          name: doctors.name,
+          specialization: doctors.specialization,
+          img: doctors.img,
+          colorCode: doctors.colorCode,
+        },
+        patient: {
+          id: patients.id,
+          first_name: patients.first_name,
+          last_name: patients.last_name,
+          gender: patients.gender,
+          date_of_birth: patients.date_of_birth,
+      },
+    }
+    ).from(appointments)
+    .innerJoin(doctors, eq(appointments.doctor_id, doctors.id))
+    .innerJoin(patients, eq(appointments.patient_id, patients.id))
     .where(eq(appointments.patient_id, id))
-    .limit(10).orderBy(desc(appointments.created_at));          
+    .limit(10).orderBy(desc(appointments.appointment_date));          
+
+  
 
 
     
-    
+    // const mappedAppointments = appointment
+    //   .map((item) => ({
+    //     status: item.appointment.status,
+    //     appointment_date: item.appointment.appointment_date,
+    //   }))
+    //   .filter((item) => item.appointment_date !== null) as Appointment[];
+
+    // const validAppointments = appointment
+    //   .filter((item) => item.appointment_date !== null)
+    //   .map((item) => ({
+    //     ...item,
+    //     appointment_date: item.appointment_date as Date,
+    //   })) as Appointment[];
+
     const { appointmentCounts, monthlyData } = await processAppointments(appointment);
     
-    console.log("APPOINTMENT DATAS", appointmentCounts);
+   
 
+    const last5Records = appointment.slice(0, 5);
 
     const today = daysOfWeek[new Date().getDay()];
 
-    const availableDoctors = await db
-  .select({
-    id: doctors.id,
-    name: doctors.name,
-    specialization: doctors.specialization,
-    img: doctors.img,
-    colorCode: doctors.colorCode,
-    working_days: workingDays, // include the full working day object
-  })
-  .from(doctors)
-  .innerJoin(workingDays, eq(doctors.id, workingDays.doctor_id))
-  .where(ilike(workingDays.day, today)) // case-insensitive comparison
-  .limit(4);
+
+            const availableDoctors = await db
+                  .select({
+                    id: doctors.id,
+                    name: doctors.name,
+                    specialization: doctors.specialization,
+                    img: doctors.img,
+                    colorCode: doctors.colorCode,
+                  })
+                  .from(doctors)
+                .innerJoin(workingDays, eq(doctors.id, workingDays.doctor_id))
+                //  .where(ilike(workingDays.day, today)) // case-insensitive match
+                .limit(4);    
+
+
+
+
+               
+
 
     return {
       success: true,
       data,
       appointmentCounts,     
       totalAppointments: appointment.length,
-    
+      last5Records,
       monthlyData,
       availableDoctors,
       status: 200,

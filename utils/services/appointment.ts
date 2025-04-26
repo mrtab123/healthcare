@@ -1,7 +1,11 @@
-import db from "@/lib/db";
-import { Prisma } from "@prisma/client";
+import { db } from "@/database/drizzle";
+import { appointments, doctors, patients } from "@/database/schema";
+import { eq } from "drizzle-orm";
 
-export async function getAppointmentById(id: number) {
+
+
+
+export async function getAppointmentById(id: string) {
   try {
     if (!id) {
       return {
@@ -11,37 +15,57 @@ export async function getAppointmentById(id: number) {
       };
     }
 
-    const data = await db.appointment.findUnique({
-      where: { id },
-      include: {
+     const data = await db.select(
+      
+      {
+        id: appointments.id,
+        status: appointments.status,
+        appointment_date: appointments.appointment_date,
+        time: appointments.time,
+        reason: appointments.reason,
+        note: appointments.note,
+        created_at: appointments.created_at,
+        doctor_id: appointments.doctor_id,
+         patient_id: appointments.patient_id,
         doctor: {
-          select: { id: true, name: true, specialization: true, img: true },
+          id: doctors.id,
+          name: doctors.name,
+          specialization: doctors.specialization,
+          img: doctors.img,            
         },
         patient: {
-          select: {
-            id: true,
-            first_name: true,
-            last_name: true,
-            date_of_birth: true,
-            gender: true,
-            img: true,
-            address: true,
-            phone: true,
-          },
-        },
+          id: patients.id,
+          first_name: patients.first_name,
+          last_name: patients.last_name,
+          gender: patients.gender,
+          date_of_birth: patients.date_of_birth,
+          img: patients.img,
+          address: patients.address,
+          phone: patients.phone,
+          
       },
-    });
+    }
+    ).from(appointments)
+    .innerJoin(doctors, eq(appointments.doctor_id, doctors.id))
+    .innerJoin(patients, eq(appointments.patient_id, patients.id))     
+        .where(eq(appointments.id, id))
+        .limit(1);
+      
+        
+      
 
     if (!data) {
       return {
         success: false,
         message: "Appointment data not found",
-        status: 200,
+        status: 404,
         data: null,
+        
       };
+    
     }
 
-    return { success: true, data, status: 200 };
+    return { success: true, data:data[0], status: 200, message: "Appointment data found" };
   } catch (error) {
     console.log(error);
     return { success: false, message: "Internal Server Error", status: 500 };

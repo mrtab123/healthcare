@@ -1,5 +1,7 @@
+import { AppointmentChart } from '@/components/charts/appointment-chart';
 import { StatSummary } from '@/components/charts/stat-summary';
 import { StatCard } from '@/components/stat-card';
+import { RecentAppointments } from '@/components/tables/recent-appointment';
 import { Button } from '@/components/ui/button';
 import { getPatientDashboardStatistics } from '@/utils/services/patient';
 import { currentUser } from '@clerk/nextjs/server'
@@ -7,19 +9,22 @@ import { Briefcase, BriefcaseBusiness, BriefcaseMedical } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import React from 'react'
+
 const PatientDashboard = async () => {
+
   const user = await currentUser();
+
   const {
     data,
     appointmentCounts,
-  
+    last5Records,
     totalAppointments,
     availableDoctor,
     monthlyData,
   
   } 
   = await getPatientDashboardStatistics(user!.id);
-console.log(data);
+
 
   if(user && !data) {
     redirect("/patient/registration");
@@ -93,11 +98,12 @@ console.log(data);
 
 
         <div className="h-[500px]">
-          {/* <AppointmentChart data={monthlyData} /> */}
+          <AppointmentChart data={monthlyData} />
         </div>
 
         <div className="bg-white rounded-xl p-4 mt-8">
-          {/* <RecentAppointments data={last5Records} /> */}
+          
+          <RecentAppointments data={last5Records} />
         </div>
 
        

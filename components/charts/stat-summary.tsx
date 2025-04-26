@@ -12,7 +12,7 @@ export const StatSummary = ({ data, total }: { data: any; total: number }) => {
     {
       name: "Appointments",
       count: data?.pending + data?.scheduled || 0,
-      fill: "#000000",
+      fill: "#63f800",
     },
     { name: "Consultation", count: data?.completed || 0, fill: "#2563eb" },
   ];
@@ -58,7 +58,7 @@ export const StatSummary = ({ data, total }: { data: any; total: number }) => {
       <div className="flex justify-center gap-16">
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
-            <div className="w-5 h-5 bg-[#000000] rounded-xl" />
+            <div className="w-5 h-5 bg-[#63f800] rounded-xl" />
             <h1 className="font-bold">{formatNumber(appointment)}</h1>
           </div>
           <h2 className="text-xs text-gray-400">

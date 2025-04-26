@@ -117,7 +117,7 @@ boolean } from "drizzle-orm/pg-core";
     });
     
   // Doctors Table
-  export const doctors = pgTable('doctors', {
+  export const doctors = pgTable('doctors', {    
     id: varchar("id", { length: 255 }).notNull().unique(),    
     email: varchar('email').unique(),
     name: varchar('name'),

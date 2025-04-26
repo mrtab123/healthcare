@@ -4,6 +4,7 @@
 import { db } from "@/database/drizzle";
 import { patients } from "@/database/schema";
 import { PatientFormSchema } from "@/lib/schema";
+import { PatientsParams } from "@/types";
 
 import { clerkClient } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";

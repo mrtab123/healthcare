@@ -14,7 +14,7 @@ export function getInitials(name: string): string {
   return initials.join("");
 }
 
-export function formatDateTime(isoDate: string): string {
+export function formatDateTime(appointment_date: Date, isoDate: string): string {
   const date = new Date(isoDate);
 
   const options: Intl.DateTimeFormatOptions = {
@@ -182,3 +182,5 @@ export function calculateDiscount({
     );
   }
 }
+
+
