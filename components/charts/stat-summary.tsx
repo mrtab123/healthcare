@@ -63,7 +63,7 @@ export const StatSummary = ({ data, total }: { data: any; total: number }) => {
           </div>
           <h2 className="text-xs text-gray-400">
             {dataInfo[1].name}(
-            {((appointment / (appointment + consultation)) * 100).toFixed(0)})
+            {((appointment / (appointment + consultation)) * 100).toFixed(0)}%)
           </h2>
         </div>
 
@@ -75,7 +75,7 @@ export const StatSummary = ({ data, total }: { data: any; total: number }) => {
 
           <h2 className="text-xs text-gray-400">
             {dataInfo[2].name}(
-            {((consultation / (appointment + consultation)) * 100).toFixed(0)})
+            {((consultation / (appointment + consultation)) * 100).toFixed(0)}%)
           </h2>
         </div>
       </div>

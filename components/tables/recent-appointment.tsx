@@ -6,10 +6,10 @@ import { Table } from "./table";
 import { ProfileImage } from "../profile-image";
 import { AppointmentStatusIndicator } from "../appointment-status-indicator";
 
-import { formatDateTime } from "@/lib/utils";
+// import { formatDateTime } from "@/lib/utils";
 import { ViewAppointment } from "../view-appointment";
 
-//import { format } from "date-fns";
+import { format } from "date-fns";
 
 interface DataProps {
   data: any[];
@@ -57,7 +57,7 @@ export const RecentAppointments = ({ data }: DataProps) => {
             url={item?.patient?.img}
             name={name}
             className="bg-violet-600"
-            bgColor={item?.patient?.colorCode}
+            // bgColor={item?.patient?.colorCode}
           />
           <div>
             <h3 className="text-sm md:text-base md:font-medium uppercase">
@@ -70,8 +70,8 @@ export const RecentAppointments = ({ data }: DataProps) => {
         </td>
 
         <td className="hidden md:table-cell">
-          {/* {format(item?.appointment_date, "yyyy-MM-dd")}  */}
-           {formatDateTime(item?.appointment_date).dateTime}  
+          {format(item?.appointment_date, "yyyy-MM-dd")} 
+           {/* {formatDateTime(item?.appointment_date).dateTime}   */}
         </td>
         <td className="hidden md:table-cell">{item?.time}</td>
         <td className="hidden md:table-cell items-center py-2">

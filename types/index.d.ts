@@ -82,6 +82,49 @@ export type Appointment = {
   doctor: Doctor;
 };
 
+
+export type Patient = {
+  id: string;
+  first_name: string;
+  last_name: string;
+  date_of_birth: Date;
+  gender:string;
+  phone: string;
+  email: string;
+  address: string;
+  marital_status: string;
+  emergency_contact_name: string;
+  emergency_contact_number: string;
+  relation: string;
+  blood_group: string;
+  allergies: string;
+  medical_condition: string;
+  medical_history: string;
+  insurance_provider: string;
+  insurance_number: string;
+  privacy_consent: boolean;
+  service_consent: boolean;
+  disclosure_consent: boolean;
+  img: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type Doctor = {
+  id: string;
+  email: string;
+  name: string;
+  specialization: string;
+  license_number: string;
+  phone: string;
+  address: string;
+  department: string;
+  img: string;
+  colorCode: string;
+  avalability: string;
+  type: string;
+}
+
 export type AvailableDoctorProps = {
   id: string;
   name: string;
@@ -94,3 +137,53 @@ export type AvailableDoctorProps = {
     close_time: string;
   }[];
 }[];
+
+// export type AvailableDoctorProps = {
+//   id: string;
+//   name: string;
+//   specialization: string;
+//   img?: string;
+//   colorCode?: string;
+//   working_days: {
+//     id: string;
+//     day: string;
+//     start_time: string;
+//     close_time: string;
+//   };
+// };
+
+
+// export interface AvailableDoctorProps {
+//   data: {
+//     img: string;
+//     name: string;
+//     specialization: string;
+//     colorCode?: string;
+//     working_days: {
+//       start_time: string;
+//       close_time: string;
+//     };
+//   }[];
+// }
+
+
+
+// interface WorkingDay {
+//   day: string; 
+//   start_time: string;
+//   close_time: string;
+// }
+
+interface AvailableDoctorProps2 {
+  data: {
+    id: string;
+    name: string;
+    specialization: string;
+    img?: string;
+    colorCode?: string;  
+      day: string;
+      start_time: string;
+      close_time: string;
+   
+  }[];
+}

@@ -1,6 +1,6 @@
 import { db } from "@/database/drizzle";
 import { appointments, doctors, patients } from "@/database/schema";
-import { eq } from "drizzle-orm";
+import { and, count, desc, eq, ilike, or } from "drizzle-orm";
 
 
 
@@ -79,52 +79,43 @@ interface AllAppointmentsProps {
   id?: string;
 }
 
-const buildQuery = (id?: string, search?: string) => {
-  // Base conditions for search if it exists
-  const searchConditions: Prisma.AppointmentWhereInput = search
-    ? {
-        OR: [
-          {
-            patient: {
-              first_name: { contains: search, mode: "insensitive" },
-            },
-          },
-          {
-            patient: {
-              last_name: { contains: search, mode: "insensitive" },
-            },
-          },
-          {
-            doctor: {
-              name: { contains: search, mode: "insensitive" },
-            },
-          },
-        ],
-      }
-    : {};
 
-  // ID filtering conditions if ID exists
-  const idConditions: Prisma.AppointmentWhereInput = id
-    ? {
-        OR: [{ patient_id: id }, { doctor_id: id }],
-      }
-    : {};
 
-  // Combine both conditions with AND if both exist
-  const combinedQuery: Prisma.AppointmentWhereInput =
-    id || search
-      ? {
-          AND: [
-            ...(Object.keys(searchConditions).length > 0
-              ? [searchConditions]
-              : []),
-            ...(Object.keys(idConditions).length > 0 ? [idConditions] : []),
-          ],
-        }
-      : {};
 
-  return combinedQuery;
-};
+
+
+
+
+export function buildQuery(id?: string, search?: string) {
+  const conditions = [];
+
+  // Search-related conditions
+  if (search) {
+    conditions.push(
+      or(
+        ilike(patients.first_name, `%${search}%`),
+        ilike(patients.last_name, `%${search}%`),
+        ilike(doctors.name, `%${search}%`)
+      )
+    );
+  }
+
+  // ID-related conditions
+  if (id) {
+    conditions.push(
+      or(eq(appointments.patient_id, id), eq(appointments.doctor_id, id))
+    );
+  }
+
+  // Combine all conditions using `and`
+  return conditions.length > 0 ? and(...conditions) : undefined;
+}
+
+
+
+
+
+
 
 export async function getPatientAppointments({
   page,
@@ -133,61 +124,63 @@ export async function getPatientAppointments({
   id,
 }: AllAppointmentsProps) {
   try {
+  
     const PAGE_NUMBER = Number(page) <= 0 ? 1 : Number(page);
-    const LIMIT = Number(limit) || 10;
-
-    const SKIP = (PAGE_NUMBER - 1) * LIMIT; //0 -9
-
+    const LIMIT = Number(limit) || 2;
+    const SKIP = (PAGE_NUMBER - 1) * LIMIT;
+    
+    const query = buildQuery(id, search); // should return Drizzle-compatible conditions
+    
     const [data, totalRecord] = await Promise.all([
-      db.appointment.findMany({
-        where: buildQuery(id, search),
-        skip: SKIP,
-        take: LIMIT,
-        select: {
-          id: true,
-          patient_id: true,
-          doctor_id: true,
-          type: true,
-          appointment_date: true,
-          time: true,
-          status: true,
+      db
+        .select({
+          id: appointments.id,
+          patient_id: appointments.patient_id,
+          doctor_id: appointments.doctor_id,
+          type: appointments.type,
+          appointment_date: appointments.appointment_date,
+          time: appointments.time,
+          status: appointments.status,
           patient: {
-            select: {
-              id: true,
-              first_name: true,
-              last_name: true,
-              phone: true,
-              gender: true,
-              img: true,
-              date_of_birth: true,
-              colorCode: true,
-            },
+            id: patients.id,
+            first_name: patients.first_name,
+            last_name: patients.last_name,
+            phone: patients.phone,
+            gender: patients.gender,
+            img: patients.img,
+            date_of_birth: patients.date_of_birth,
+            
           },
           doctor: {
-            select: {
-              id: true,
-              name: true,
-              specialization: true,
-              colorCode: true,
-              img: true,
-            },
+            id: doctors.id,
+            name: doctors.name,
+            specialization: doctors.specialization,
+            colorCode: doctors.colorCode,
+            img: doctors.img,
           },
-        },
-        orderBy: { appointment_date: "desc" },
-      }),
-      db.appointment.count({
-        where: buildQuery(id, search),
-      }),
+        })
+        .from(appointments)
+        .leftJoin(patients, eq(appointments.patient_id, patients.id))
+        .leftJoin(doctors, eq(appointments.doctor_id, doctors.id))
+         .where(query)
+        .orderBy(desc(appointments.appointment_date))
+        .limit(LIMIT)
+        .offset(SKIP),
+    
+      db
+        .select({ count: count() })
+        .from(appointments)
+        .where(query)
+        .then(res => res[0]?.count ?? 0),
     ]);
-
     if (!data) {
       return {
         success: false,
         message: "Appointment data not found",
         status: 200,
-        data: null,
       };
     }
+    console.log("data", data);
 
     const totalPages = Math.ceil(totalRecord / LIMIT);
 
@@ -199,11 +192,21 @@ export async function getPatientAppointments({
       totalRecord,
       status: 200,
     };
+    
   } catch (error) {
     console.log(error);
     return { success: false, message: "Internal Server Error", status: 500 };
   }
 }
+
+
+
+
+
+
+
+
+
 
 export async function getAppointmentWithMedicalRecordsById(id: number) {
   try {

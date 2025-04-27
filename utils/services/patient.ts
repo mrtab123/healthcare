@@ -5,6 +5,8 @@ import { eq, desc, ilike } from "drizzle-orm";
 import { getMonth, format, startOfYear, endOfMonth, isToday } from "date-fns";
 import { daysOfWeek } from "..";
 import { time } from "console";
+import { da } from "@faker-js/faker";
+import { AvailableDoctorProps, AvailableDoctorProps2, WorkingDay } from "@/types";
 
 type  AppointmentStatus = "pending" | "scheduled" | "completed" | "cancelled";
 
@@ -188,26 +190,49 @@ export async function getPatientDashboardStatistics(id: string) {
 
     const last5Records = appointment.slice(0, 5);
 
+    // 
     const today = daysOfWeek[new Date().getDay()];
-
-
-            const availableDoctors = await db
-                  .select({
-                    id: doctors.id,
-                    name: doctors.name,
-                    specialization: doctors.specialization,
-                    img: doctors.img,
-                    colorCode: doctors.colorCode,
-                  })
-                  .from(doctors)
-                .innerJoin(workingDays, eq(doctors.id, workingDays.doctor_id))
-                //  .where(ilike(workingDays.day, today)) // case-insensitive match
-                .limit(4);    
+   
 
 
 
+    
+    const availableDoctors = await db.select(
+      {
+                 id: doctors.id,
+                name: doctors.name,
+                specialization: doctors.specialization,
+                img: doctors.img,
+                colorCode: doctors.colorCode, 
+                day: workingDays.day,
+                start_time: workingDays.start_time,
+                close_time: workingDays.close_time
+       
+    }
+    ).from(doctors)
+    .innerJoin(workingDays, eq(doctors.id, workingDays.doctor_id))
+     .where(ilike(workingDays.day, today)) // case-insensitive match
+    .limit(4).orderBy(desc(workingDays.start_time)); 
+                
+              
+            
+            // const availableDoctors: AvailableDoctorProps2[] = rawDoctors.map(doctor => ({
+            //   id: doctor.id,
+            //   name: doctor.name || "",
+            //   specialization: doctor.specialization || "",
+            //   img: doctor.img || undefined,
+            //   colorCode: doctor.colorCode || undefined,
+            //   working_days: [
+            //     {
+            //       day: doctor.working_days.day || "",
+            //       start_time: doctor.working_days.start_time || "",
+            //       close_time: doctor.working_days.close_time || "",
+            //     },
+            //   ],
+            // })) as AvailableDoctorProps2[];
 
-               
+console.log("Available Doctors", availableDoctors);
+    
 
 
     return {

@@ -1,8 +1,11 @@
+import { AvailableDoctors } from '@/components/available-doctor';
 import { AppointmentChart } from '@/components/charts/appointment-chart';
 import { StatSummary } from '@/components/charts/stat-summary';
+import { PatientRatingContainer } from '@/components/patient-rating-container';
 import { StatCard } from '@/components/stat-card';
 import { RecentAppointments } from '@/components/tables/recent-appointment';
 import { Button } from '@/components/ui/button';
+import { AvailableDoctorProps } from '@/types';
 import { getPatientDashboardStatistics } from '@/utils/services/patient';
 import { currentUser } from '@clerk/nextjs/server'
 import { Briefcase, BriefcaseBusiness, BriefcaseMedical } from 'lucide-react';
@@ -19,7 +22,7 @@ const PatientDashboard = async () => {
     appointmentCounts,
     last5Records,
     totalAppointments,
-    availableDoctor,
+    availableDoctors,
     monthlyData,
   
   } 
@@ -116,9 +119,9 @@ const PatientDashboard = async () => {
           <StatSummary data={appointmentCounts} total={totalAppointments} />
         </div>
 
-        {/* <AvailableDoctors data={availableDoctor as AvailableDoctorProps} />
+         <AvailableDoctors data={availableDoctors} />
 
-        <PatientRatingContainer /> */}
+        <PatientRatingContainer /> 
       </div>
    
 

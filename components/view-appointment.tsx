@@ -11,8 +11,7 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { Button } from "./ui/button";
-// import { calculateAge } from "@/utils";
-
+ import { calculateAge } from "@/utils";
 import { Calendar, Phone } from "lucide-react";
  import { format } from "date-fns";
 import { AppointmentStatusIndicator } from "./appointment-status-indicator";
@@ -28,8 +27,6 @@ import { ProfileImage } from "./profile-image";
 export const ViewAppointment = async ({ id }: { id: string | undefined }) => {
   const {data}  = await getAppointmentById((id!));
 
-  console.log("VEIWAPPOINTMENT", data);
-
   const { userId } = await auth();
 
 
@@ -39,7 +36,7 @@ export const ViewAppointment = async ({ id }: { id: string | undefined }) => {
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="flex items-center justify-center rounded-full bg-blue-500/10 hover:underline text-blue-600 px-1.5 py-1 text-xs md:text-sm"
+          className="flex items-center justify-center rounded bg-blue-500/10 hover:underline text-blue-600 px-1.5 py-1 text-xs md:text-sm"
         >
           View
         </Button>
@@ -51,7 +48,7 @@ export const ViewAppointment = async ({ id }: { id: string | undefined }) => {
             <DialogTitle>Patient Appointment</DialogTitle>
             <DialogDescription>
               This appointment was booked on the{" "}
-              {formatDateTime(data?.created_at).dateTime} 
+              {data?.created_at ? formatDateTime(data.created_at).dateTime : "N/A"} 
               {/* {formatDateTime(data.created_at.toString())} */}
             </DialogDescription>
           </DialogHeader>
@@ -67,15 +64,15 @@ export const ViewAppointment = async ({ id }: { id: string | undefined }) => {
             </div>
           )}
 
-          <div className="grid gap-4 py-4">
+          <div className="grid gap-4 py-2">
             <p className="w-fit bg-blue-100 text-blue-600 py-1 rounded text-xs md:text-sm">
               Personal Information
             </p>
 
-            <div className="flex flex-col md:flex-row gap-6 mb-16">
+            <div className="flex flex-col md:flex-row gap-6 mb-5">
               <div className="flex gap-1 w-full md:w-1/2">
                 <ProfileImage
-                  url={data?.patient?.img}
+                  url={data?.patient.img ? data?.patient.img : ""}
                   name={
                     data?.patient?.first_name + " " + data?.patient?.last_name
                   }
@@ -90,7 +87,7 @@ export const ViewAppointment = async ({ id }: { id: string | undefined }) => {
 
                   <p className="flex items-center gap-2 text-gray-600">
                     <Calendar size={20} className="text-gray-500" />
-                    {/* {calculateAge(data?.patient?.date_of_birth)} */}
+                     {data?.patient?.date_of_birth ? calculateAge(new Date(data.patient.date_of_birth)) : "N/A"}
                   </p>
 
                   <span className="flex items-center text-sm gap-2">
@@ -117,7 +114,7 @@ export const ViewAppointment = async ({ id }: { id: string | undefined }) => {
                 <span className="text-sm text-gray-500">Date</span>
                 <p className="text-sm text-gray-600">
                   {/* {format(data?.appointment_date, "MMM dd, yyyy")} */}
-                  {formatDateTime(data?.created_at).dateTime} 
+                  {data?.created_at ? formatDateTime(data?.created_at).dateTime : "N/A"} 
                 </p>
               </div>
               <div>
@@ -126,7 +123,7 @@ export const ViewAppointment = async ({ id }: { id: string | undefined }) => {
               </div>
               <div>
                 <span className="text-sm text-gray-500">Status</span>
-                <AppointmentStatusIndicator status={data?.status} />
+                <AppointmentStatusIndicator status={data?.status ?? "pending"} />
               </div>
             </div>
 
@@ -137,14 +134,14 @@ export const ViewAppointment = async ({ id }: { id: string | undefined }) => {
               </div>
             )}
 
-            <p className="w-fit bg-blue-100 text-blue-600 py-1 px-2 rounded text-xs md:text-sm mt-16">
+            <p className="w-fit bg-blue-100 text-blue-600 py-1 px-2 rounded text-xs md:text-sm mt-8">
               Physician Information
             </p>
-            <div className="w-full flex flex-col md:flex-row gap-8 mb-8">
+            <div className="w-full flex flex-col md:flex-row gap-4 mb-4">
               <div className="flex gap-3">
                 <ProfileImage
-                  url={data?.doctor?.img}
-                  name={data?.doctor?.name}
+                  url={data?.doctor?.img ? data?.doctor?.img : ""}
+                  name={data?.doctor?.name ?? ""}
                   className="xl:size-20 bg-emerald-600"
                   textClassName="xl:text-2xl"
                 />
@@ -161,10 +158,10 @@ export const ViewAppointment = async ({ id }: { id: string | undefined }) => {
 
             {((await checkRole("patient")) || data?.doctor_id === userId) && (
               <>
-                <p className="w-fit bg-blue-100 text-blue-600 py-1 px-2 rounded text-xs md:text-sm mt-4">
+                <p className="w-fit bg-blue-100 text-blue-600 py-1 px-2 rounded text-xs md:text-sm mt-2">
                   Perform Action
                 </p>
-                <AppointmentAction id={data?.id} status={data?.status} />
+                <AppointmentAction id={data!.id!} status={data!.status!} />
               </>
             )}
           </div>
