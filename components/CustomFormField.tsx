@@ -50,7 +50,7 @@ interface CustomProps{
       case FormFieldType.INPUT:
         return(
 
-          <div className="flex rounded border ">
+          <div className="flex rounded border focus-within:ring-2 focus-within:ring-blue-300 focus-within:border-blue-300">
               {props.iconSrc && (
                 <Image 
                 src={iconSrc || '/default-icon.svg'}
@@ -75,7 +75,7 @@ interface CustomProps{
             case FormFieldType.PASSWORD:
               return(
       
-                <div className="flex rounded-md border">
+                <div className="flex rounded-md border focus-within:ring-2 focus-within:ring-blue-300 focus-within:border-blue-300">
                     {props.iconSrc && (
                       <Image 
                       src={iconSrc || '/default-icon.svg'}
@@ -104,7 +104,7 @@ interface CustomProps{
               <Textarea
                 placeholder={placeholder!}
                 {...field}
-                className="shad-textArea"
+                className="shad-textArea focus-within:ring-2 focus-within:ring-blue-300 focus-within:border-blue-300"
                 disabled={props.disabled}
               />
             </FormControl>

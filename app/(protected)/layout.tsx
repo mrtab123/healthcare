@@ -18,7 +18,7 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
       
         <Navbar />
 
-        <div className="h-auto w-full p-2  remove-scrollbar bg-gray-50 ">{children}</div>
+        <div className="h-full w-full p-2  remove-scrollbar bg-gray-50 ">{children}</div>
       </div>
     </div>
   );

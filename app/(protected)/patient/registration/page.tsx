@@ -16,9 +16,12 @@ const Registration = async () => {
 
 
  return (
-   <div className="py-3 px-3 flex justify-center">
- <NewPatient data={data} type={!isDataValid ? "create" : "update"} />
+  //  <div className="py-3 px-3 flex justify-center">
+  <div className="w-full h-full flex justify-center">
+      <div className="max-w-6xl w-full relative pb-10">
+        <NewPatient data={data} type={!isDataValid ? "create" : "update"} />
      
+   </div>
    </div>
  );
 }

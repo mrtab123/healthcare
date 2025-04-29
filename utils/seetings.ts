@@ -1,4 +1,4 @@
-export const DATA_LIMIT = 2;
+export const DATA_LIMIT = 10;
 
 export const SPECIALIZATION = [
   {

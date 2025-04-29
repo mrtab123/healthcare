@@ -82,34 +82,39 @@ interface AllAppointmentsProps {
 
 
 
-
-
-
-
 export function buildQuery(id?: string, search?: string) {
   const conditions = [];
 
-  // Search-related conditions
+  // Search conditions (first_name, last_name, doctor name)
   if (search) {
+    const searchPattern = `%${search}%`;
     conditions.push(
       or(
-        ilike(patients.first_name, `%${search}%`),
-        ilike(patients.last_name, `%${search}%`),
-        ilike(doctors.name, `%${search}%`)
+        ilike(patients.first_name, searchPattern),
+        ilike(patients.last_name, searchPattern),
+        ilike(doctors.name, searchPattern)
       )
     );
   }
 
-  // ID-related conditions
+  // ID filtering (match either patient_id or doctor_id)
   if (id) {
     conditions.push(
-      or(eq(appointments.patient_id, id), eq(appointments.doctor_id, id))
+      or(
+        eq(appointments.patient_id, id),
+        eq(appointments.doctor_id, id)
+      )
     );
   }
-
-  // Combine all conditions using `and`
-  return conditions.length > 0 ? and(...conditions) : undefined;
+  console.log("conditions", conditions);
+  // Return combined condition or undefined if no filters
+  if (conditions.length === 0) return undefined;
+  if (conditions.length === 1) return conditions[0];
+  return and(...conditions);
 }
+
+
+
 
 
 
@@ -126,7 +131,7 @@ export async function getPatientAppointments({
   try {
   
     const PAGE_NUMBER = Number(page) <= 0 ? 1 : Number(page);
-    const LIMIT = Number(limit) || 2;
+    const LIMIT = Number(limit) || 10;
     const SKIP = (PAGE_NUMBER - 1) * LIMIT;
     
     const query = buildQuery(id, search); // should return Drizzle-compatible conditions
@@ -170,6 +175,8 @@ export async function getPatientAppointments({
       db
         .select({ count: count() })
         .from(appointments)
+        .leftJoin(patients, eq(appointments.patient_id, patients.id))
+        .leftJoin(doctors, eq(appointments.doctor_id, doctors.id))
         .where(query)
         .then(res => res[0]?.count ?? 0),
     ]);
