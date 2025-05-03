@@ -58,7 +58,8 @@ export async function getPatientById(id: string) {
     //   date_of_birth: patient[0].date_of_birth ? new Date(patient[0].date_of_birth) : null, // Ensure valid Date
     // };
 
-    return { success: true, data: JSON.parse(JSON.stringify(patient)), status: 200 };
+    return { success: true, data: JSON.parse(JSON.stringify(patient[0])), status: 200 };
+    // return { success: true, data: patient[0], status: 200 };
   } catch (error) {
     console.log(error);
     return { success: false, message: "Internal Server Error", status: 500 };

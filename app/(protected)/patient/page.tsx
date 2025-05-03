@@ -5,10 +5,10 @@ import { PatientRatingContainer } from '@/components/patient-rating-container';
 import { StatCard } from '@/components/stat-card';
 import { RecentAppointments } from '@/components/tables/recent-appointment';
 import { Button } from '@/components/ui/button';
-import { AvailableDoctorProps } from '@/types';
+
 import { getPatientDashboardStatistics } from '@/utils/services/patient';
 import { currentUser } from '@clerk/nextjs/server'
-import { Briefcase, BriefcaseBusiness, BriefcaseMedical } from 'lucide-react';
+import { Briefcase, BriefcaseBusiness, BriefcaseMedical, UserPen } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import React from 'react'
@@ -85,8 +85,9 @@ const PatientDashboard = async () => {
             </h1>
 
             <div className="space-x-2">
-              <Button size={"sm"}>{new Date().getFullYear()}</Button>
-              <Button size="sm" variant="outline" className="hover:underline">
+              <Button size={"sm"} variant="outline" className="hover:underline bg-blue-600 text-white rounded">{new Date().getFullYear()}</Button>
+              <Button size="sm" variant="outline" className="hover:underline bg-blue-600 text-white rounded">
+               
                 <Link href="/patient/self">View Profile</Link>
               </Button>
             </div>

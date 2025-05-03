@@ -29,7 +29,9 @@ export const Navbar = () => {
   return (
     <div className="p-5 flex justify-between ">
       <h1 className="text-xl font-medium text-gray-800 capitalize">
+
         {path || "Overview"}
+        
       </h1>
 
       <div className="flex items-center gap-4">

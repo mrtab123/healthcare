@@ -36,7 +36,7 @@ export const ProfileImage = ({
           "flex md:hidden lg:flex w-10 h-10 rounded-full text-white text-base items-center justify-center font-light",
           className
         )}
-        style={{ backgroundColor: bgColor   }}
+        style={{ backgroundColor: bgColor  || "#4F46E5" }}
       >
         <p className={textClassName}>{getInitials(name)}</p>
       </div>

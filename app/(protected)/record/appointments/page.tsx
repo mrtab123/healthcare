@@ -14,6 +14,7 @@ import SearchInput from '@/components/search-input';
 import { AppointmentActionOptions } from '@/components/appointment-actions';
 import { DATA_LIMIT } from '@/utils/seetings';
 import ExcelButton from '@/components/excel-button';
+import { AppointmentContainer } from '@/components/appointment-container';
 
 const columns = [
   {
@@ -100,7 +101,7 @@ const Appointments = async (props: {
           <ProfileImage
                         url={item?.patient?.img}
                         name={patient_name}
-                        className="bg-blue-600"
+                        // className="bg-blue-600"
                         bgColor={item?.doctor?.colorCode}
                        
 
@@ -181,7 +182,7 @@ const Appointments = async (props: {
           <SearchInput />
 
         
-          {/* {isPatient && <AppointmentContainer id={userId!} />} */}
+          {isPatient && <AppointmentContainer id={userId!} />}
         </div>
       </div>
 

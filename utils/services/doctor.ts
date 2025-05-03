@@ -1,18 +1,22 @@
-import db from "@/lib/db";
+// import db from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { daysOfWeek } from "..";
 import { processAppointments } from "./patient";
+import { db } from "@/database/drizzle";
+import { doctors } from "@/database/schema";
 
 export async function getDoctors() {
   try {
-    const data = await db.doctor.findMany();
+    // const data = await db.doctor.findMany();
+    const data = await db.select().from(doctors);
 
-    return { success: true, data, status: 200 };
+    return { success: true, data:JSON.parse(JSON.stringify(data)), status: 200 };
   } catch (error) {
     console.log(error);
     return { success: false, message: "Internal Server Error", status: 500 };
   }
 }
+
 export async function getDoctorDashboardStats() {
   try {
     const { userId } = await auth();

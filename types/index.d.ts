@@ -187,3 +187,23 @@ interface AvailableDoctorProps2 {
    
   }[];
 }
+interface Doctor {
+  data: {
+      id: string;
+      email: string;
+      name: string;
+      specialization: string
+      license_number:string;
+      phone: string;
+      address: string,
+      department: string;
+      img: string;
+      colorCode: string;
+      availablity_status: string;
+      type: string;
+      created_at: Date;
+      updated_at: Date;
+
+   
+  }[];
+}
