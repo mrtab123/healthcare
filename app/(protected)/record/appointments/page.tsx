@@ -102,7 +102,7 @@ const Appointments = async (props: {
                         url={item?.patient?.img}
                         name={patient_name}
                         // className="bg-blue-600"
-                        bgColor={item?.doctor?.colorCode}
+                        // bgColor={item?.doctor?.colorCode}
                        
 
                       />
@@ -178,7 +178,7 @@ const Appointments = async (props: {
 
 
         <div className="w-full lg:w-fit flex items-center justify-between lg:justify-start gap-2">
-        <ExcelButton data={data} />
+        {/* <ExcelButton data={data} /> */}
           <SearchInput />
 
         

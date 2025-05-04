@@ -107,13 +107,13 @@ export const BookAppointment = ({
       <SheetTrigger asChild>
         <Button
           variant="ghost"
-          className="w-full flex items-center gap-2 justify-start text-sm font-light bg-blue-600 text-white"
+          className="w-full flex items-center gap-2 justify-start text-sm font-light bg-blue-600 text-white "
         >
           <UserPen size={16} /> Book Appointment
         </Button>
       </SheetTrigger>
 
-      <SheetContent className="rounded-xl rounded-r-2xl md:h-p[95%] md:top-[2.5%] md:right-[1%] w-full bg-white">
+      <SheetContent className="rounded-xl rounded-r-2xl md:h-p[95%] md:top-[2.5%] md:right-[1%] w-full bg-white ">
         {loading ? (
           <div className="flex items-center justify-center h-full">
             <span> 

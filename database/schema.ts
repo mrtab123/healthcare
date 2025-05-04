@@ -63,7 +63,7 @@ boolean } from "drizzle-orm/pg-core";
     updated_at: timestamp('updated_at').defaultNow(),
 
 
-  });
+  })
 
     export const users = pgTable("users", {
       id: uuid("id").notNull().primaryKey().defaultRandom().unique(),

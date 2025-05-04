@@ -27,7 +27,7 @@ export const Navbar = () => {
   const path = formatPathName();
 
   return (
-    <div className="p-5 flex justify-between ">
+    <div className="p-5 flex justify-between border-b border-gray-200">
       <h1 className="text-xl font-medium text-gray-800 capitalize">
 
         {path || "Overview"}
