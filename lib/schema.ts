@@ -154,6 +154,7 @@ export const VitalSignsSchema = z.object({
 });
 
 export const DiagnosisSchema = z.object({
+  
   patient_id: z.string(),
   medical_id: z.string(),
   doctor_id: z.string(),

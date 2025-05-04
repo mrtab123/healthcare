@@ -17,11 +17,12 @@ import { Textarea } from "./ui/textarea";
 import { cn } from "@/lib/utils";
 // import { toast } from "sonner";
 import { appointmentAction } from "@/app/actions/appointment";
-import { toast } from "sonner";
+import toast from "react-hot-toast";
+
 
 interface ActionsProps {
   type: "approve" | "cancel";
-  id: string | number;
+  id: string;
   disabled: boolean;
 }
 
@@ -34,6 +35,7 @@ export const AppointmentActionDialog = ({
   const [reason, setReason] = useState("");
   const router = useRouter();
 
+  
   const handleAction = async () => {
     if (type === "cancel" && !reason) {
       toast.error("Please provide a reason for cancellation.");
@@ -73,7 +75,7 @@ export const AppointmentActionDialog = ({
     <Dialog>
       <DialogTrigger asChild disabled={!disabled}>
         {type === "approve" ? (
-          <Button size="sm" variant="ghost" className="w-full justify-start">
+          <Button size="sm" variant="ghost" className="w-full justify-start ">
             <Check size={16} /> Approve
           </Button>
         ) : (
@@ -87,8 +89,8 @@ export const AppointmentActionDialog = ({
         )}
       </DialogTrigger>
 
-      <DialogContent>
-        <div className="flex flex-col items-center justify-center py-6">
+      <DialogContent className="bg-white">
+        <div className="flex flex-col items-center justify-center py-6 bg-white">
           <DialogTitle>
             {type === "approve" ? (
               <div className="bg-emerald-200 p-4 rounded-full mb-2">
@@ -126,10 +128,10 @@ export const AppointmentActionDialog = ({
               onClick={() => handleAction()}
               variant="outline"
               className={cn(
-                "px-4 py-2 text-sm font-medium text-white hover:text-white hover:underline",
+                "px-4 py-2 text-sm font-medium text-white hover:text-white hover:underline rounded",
                 type === "approve"
                   ? "bg-blue-600 hover:bg-blue-700"
-                  : "bg-destructive hover:bg-destructive"
+                  : "bg-red-500 hover:bg-red-700",
               )}
             >
               Yes, {type === "approve" ? "Approve" : "Delete"}
@@ -137,7 +139,7 @@ export const AppointmentActionDialog = ({
             <DialogClose asChild>
               <Button
                 variant="outline"
-                className="px-4 py-2 text-sm underline text-gray-500"
+                className="px-4 py-2 text-sm underline text-white rounded bg-blue-500 hover:bg-blue-700 hover:text-white "
               >
                 No
               </Button>

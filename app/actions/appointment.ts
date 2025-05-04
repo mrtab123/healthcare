@@ -6,11 +6,12 @@ import { AppointmentStatus } from "@/constants";
 import { db } from "@/database/drizzle";
 import { appointments } from "@/database/schema";
 import { AppointmentSchema } from "@/lib/schema";
+import { Appointment } from "@/types";
 import { eq } from "drizzle-orm";
 // import { auth, currentUser } from "@clerk/nextjs/server";
 
 
-export async function createNewAppointment(data: any) {
+export async function createNewAppointment(data: Appointment) {
   try {
     const validatedData = AppointmentSchema.safeParse(data);
 

@@ -71,3 +71,4 @@ npm update
 
    npx shadcn@latest add sheet
 npx shadcn@latest add switch
+npm i react-icons

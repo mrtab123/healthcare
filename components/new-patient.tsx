@@ -22,6 +22,7 @@ import { z } from 'zod';
 import { PatientFormSchema } from '@/lib/schema';
 import { createNewPatient, updatePatient } from '@/app/actions/patients';
 import toast from 'react-hot-toast';
+import { PatientsParams } from '@/types';
 
 // import CustomFormField from './CustomFormField';
 // import { Form } from './ui/form';
@@ -64,26 +65,26 @@ export const NewPatient = ({
 if(isDataValid){
 
   userData2 = {
-      first_name: data[0]!.first_name,
-      last_name: data[0]!.last_name,
-      email: data[0]!.email,
-      phone: data[0]!.phone,
-      gender: data[0]!.gender,
-      address: data[0]!.address,
-      date_of_birth: new Date(data[0]!.date_of_birth),
-      marital_status: data[0]!.marital_status,
-      emergency_contact_name: data[0]!.emergency_contact_name,
-      emergency_contact_number: data[0]!.emergency_contact_number,
-      relation: data[0]!.relation,
-      blood_group: data[0]!.blood_group,
-      allergies: data[0]!.allergies,
-      medical_condition: data[0]!.medical_condition,
-      medical_history: data[0]!.medical_history,
-      insurance_provider: data[0]!.insurance_provider,
-      insurance_number: data[0]!.insurance_number,
-      privacy_consent: data[0]!.privacy_consent,
-      service_consent: data[0]!.service_consent,
-      disclosure_consent: data[0]!.disclosure_consent,
+      first_name: data!.first_name,
+      last_name: data!.last_name,
+      email: data!.email,
+      phone: data!.phone,
+      gender: data!.gender,
+      address: data!.address,
+      date_of_birth: new Date(data!.date_of_birth),
+      marital_status: data!.marital_status,
+      emergency_contact_name: data!.emergency_contact_name,
+      emergency_contact_number: data!.emergency_contact_number,
+      relation: data!.relation,
+      blood_group: data!.blood_group,
+      allergies: data!.allergies,
+      medical_condition: data!.medical_condition,
+      medical_history: data!.medical_history,
+      insurance_provider: data!.insurance_provider,
+      insurance_number: data!.insurance_number,
+      privacy_consent: data!.privacy_consent,
+      service_consent: data!.service_consent,
+      disclosure_consent: data!.disclosure_consent,
     };
   
   

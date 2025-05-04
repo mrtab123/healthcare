@@ -40,6 +40,8 @@ import { Doctor, Patient } from "@/types";
 import { CustomInput } from "../custom-input";
 import Image from "next/image";
 import SubmitButton from "../SubmitButton";
+import CustomFormField from "../CustomFormField";
+import { FormFieldType } from "./LoginForm";
 
 const TYPES = [
   { label: "General Consultation", value: "General Consultation" },
@@ -107,7 +109,7 @@ export const BookAppointment = ({
       <SheetTrigger asChild>
         <Button
           variant="ghost"
-          className="w-full flex items-center gap-2 justify-start text-sm font-light bg-blue-600 text-white "
+          className="w-full flex items-center gap-2 justify-start text-sm font-light bg-blue-600 hover:bg-blue-700 hover:text-white text-white rounded"
         >
           <UserPen size={16} /> Book Appointment
         </Button>
@@ -166,7 +168,47 @@ export const BookAppointment = ({
                   placeholder="Select a appointment type"
                 />
 
-                <FormField
+
+
+      <CustomFormField
+          fieldType={FormFieldType.SELECT}
+          control={form.control}
+          name="doctor_id"                             
+          label="Select a Physician"                                
+          placeholder="Select a Physician"                              
+        > 
+         {physicians?.map((doctor, id)  => (
+            <SelectItem key={id} value={doctor.id}>
+              <div className="flex cursor-pointer items-center gap-2">                
+                              <ProfileImage
+                                  url={doctor?.img}
+                                  name={doctor?.name}
+                                 
+                                  bgColor={doctor?.colorCode}
+                                  textClassName="text-black"
+                                />
+
+                    <div>
+
+                        <p className="font-medium text-start ">
+                                    {doctor?.name}
+                                  </p>
+                         <span className="text-sm text-gray-600">
+                                    {doctor?.specialization}
+                                  </span>
+                    </div>
+                    
+              </div>
+            </SelectItem>
+
+         ))}
+        
+        </CustomFormField>
+
+
+
+{/* 
+             <FormField
                   control={form.control}
                   name="doctor_id"
                   render={({ field }) => (
@@ -177,7 +219,7 @@ export const BookAppointment = ({
                         defaultValue={field.value}
                         disabled={isSubmitting}
                       >
-                        <FormControl>
+                        <FormControl >
                           <SelectTrigger>
                             <SelectValue placeholder="Select a physician" />
                           </SelectTrigger>
@@ -185,10 +227,11 @@ export const BookAppointment = ({
                         <SelectContent className="bg-white">
                           {physicians?.map((i, id) => (
                             <SelectItem key={id} value={i.id} className="p-2">
-                              <div className="flex flex-row gap-2 p-2">
+                              <div className="flex cursor-pointer items-center gap-2">
                                 <ProfileImage
                                   url={i?.img}
                                   name={i?.name}
+                                 
                                   bgColor={i?.colorCode}
                                   textClassName="text-black"
                                 />
@@ -208,7 +251,7 @@ export const BookAppointment = ({
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                />  */}
 
                 <div className="flex items-center gap-2">
                   <CustomInput

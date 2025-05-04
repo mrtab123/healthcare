@@ -1,7 +1,7 @@
 
 import { db } from "@/database/drizzle";
 import { appointments, doctors, patients, workingDays } from "@/database/schema";
-import { eq, desc, ilike } from "drizzle-orm";
+import { eq, desc, ilike, count, or } from "drizzle-orm";
 import { getMonth, format, startOfYear, endOfMonth, isToday } from "date-fns";
 import { daysOfWeek } from "..";
 import { time } from "console";
@@ -164,8 +164,7 @@ export async function getPatientDashboardStatistics(id: string) {
     ).from(appointments)
     .innerJoin(doctors, eq(appointments.doctor_id, doctors.id))
     .innerJoin(patients, eq(appointments.patient_id, patients.id))
-    .where(eq(appointments.patient_id, id))
-    .limit(10).orderBy(desc(appointments.appointment_date));          
+    .where(eq(appointments.patient_id, id)).orderBy(desc(appointments.appointment_date));          
 
   
 
@@ -247,6 +246,117 @@ console.log("Available Doctors", availableDoctors);
       status: 200,
     };
 
+  } catch (error) {
+    console.log(error);
+    return { success: false, message: "Internal Server Error", status: 500 };
+  }
+}
+
+
+
+export async function getPatientFullDataById(id: string) {
+  try {
+
+    const patient = await db
+  .select()
+  .from(patients)
+  .where(or(eq(patients.id, id), eq(patients.email, id)))
+  .limit(1);
+
+
+    //Get Latest Appointment
+    const latestAppointment = await db
+    .select({
+      appointment_date: appointments.appointment_date,
+    })
+    .from(appointments)
+    .where(eq(appointments.patient_id,  patient[0].id))
+    .orderBy(desc(appointments.appointment_date))
+    .limit(1);
+
+
+//Count Appointments
+    const [{ total }] = await db
+  .select({ total: count() })
+  .from(appointments)
+  .where(eq(appointments.patient_id, patient[0].id));
+
+
+
+
+
+    // const patientData = await db
+    // .select({
+    //   patient: patients,
+    //   appointmentsCount: db.count(appointments.id).as("appointmentsCount"),
+    //   latestAppointment: {
+    //     appointment_date: appointments.appointment_date
+    //   }
+    // })
+    // .from(patients)
+    // .leftJoin(appointments, eq(patients.id, appointments.patient_id))
+    // .where(
+    //   or(
+    //     eq(patients.id, id),
+    //     eq(patients.email, id)
+    //   )
+    // )
+    // .groupBy(patients.id)
+    // .orderBy(appointments.appointment_date)
+    // .limit(1);
+
+
+
+    // const patient = await db.patient.findFirst({
+    //   where: {
+    //     OR: [
+    //       {
+    //         id,
+    //       },
+    //       { email: id },
+    //     ],
+    //   },
+    //   include: {
+    //     _count: {     
+    //       select: {
+    //         appointments: true,
+    //       },
+    //     },
+    //     appointments: {
+    //       select: {
+    //         appointment_date: true,
+    //       },
+    //       orderBy: {
+    //         appointment_date: "desc",
+    //       },
+    //       take: 1,
+    //     },
+    //   },
+    // });
+
+
+
+
+    if (!patient) {
+      return {
+        success: false,
+        message: "Patient data not found",
+        status: 404,
+      };
+    }
+    const lastVisit =latestAppointment[0]?.appointment_date || null;
+
+    console.log("Patient Data", patient[0]);
+    return {
+      success: true,
+      data: {
+         ...patient[0],
+        totalAppointments: total,
+        lastVisit,
+      },
+      
+      status: 200,
+    };
   } catch (error) {
     console.log(error);
     return { success: false, message: "Internal Server Error", status: 500 };

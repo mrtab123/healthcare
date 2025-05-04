@@ -1,5 +1,5 @@
 {
-  "id": "d983a36b-f862-45dc-9f3d-11c0c290ed63",
+  "id": "2fbcc1fe-9f69-478a-b72e-e7a43e41678a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -23,7 +23,7 @@
         },
         "doctor_id": {
           "name": "doctor_id",
-          "type": "varchar",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
@@ -213,6 +213,12 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
+        "patient_id": {
+          "name": "patient_id",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "medical_id": {
           "name": "medical_id",
           "type": "uuid",
@@ -221,7 +227,7 @@
         },
         "doctor_id": {
           "name": "doctor_id",
-          "type": "varchar",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
@@ -272,6 +278,19 @@
       },
       "indexes": {},
       "foreignKeys": {
+        "diagnoses_patient_id_patients_id_fk": {
+          "name": "diagnoses_patient_id_patients_id_fk",
+          "tableFrom": "diagnoses",
+          "tableTo": "patients",
+          "columnsFrom": [
+            "patient_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "diagnoses_medical_id_medical_records_id_fk": {
           "name": "diagnoses_medical_id_medical_records_id_fk",
           "tableFrom": "diagnoses",
@@ -319,9 +338,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "email": {
           "name": "email",
@@ -566,7 +586,7 @@
         },
         "doctor_id": {
           "name": "doctor_id",
-          "type": "varchar",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
@@ -908,6 +928,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "colorCode": {
+          "name": "colorCode",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -1113,7 +1139,7 @@
         },
         "staff_id": {
           "name": "staff_id",
-          "type": "varchar",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
@@ -1572,7 +1598,7 @@
         },
         "doctor_id": {
           "name": "doctor_id",
-          "type": "varchar",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },

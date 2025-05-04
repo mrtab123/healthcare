@@ -8,7 +8,7 @@ CREATE TYPE "public"."status" AS ENUM('PENDING', 'APPROVED', 'REJECTED');--> sta
 CREATE TABLE "appointments" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"patient_id" varchar,
-	"doctor_id" varchar,
+	"doctor_id" uuid,
 	"appointment_date " timestamp with time zone DEFAULT now(),
 	"time" varchar,
 	"status" "appointment" DEFAULT 'pending' NOT NULL,
@@ -35,8 +35,9 @@ CREATE TABLE "audit_logs" (
 --> statement-breakpoint
 CREATE TABLE "diagnoses" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"patient_id" varchar,
 	"medical_id" uuid,
-	"doctor_id" varchar,
+	"doctor_id" uuid,
 	"symptoms" text,
 	"diagnosis" text,
 	"notes" text,
@@ -48,7 +49,7 @@ CREATE TABLE "diagnoses" (
 );
 --> statement-breakpoint
 CREATE TABLE "doctors" (
-	"id" varchar(255) NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"email" varchar,
 	"name" varchar,
 	"specialization" varchar,
@@ -84,7 +85,7 @@ CREATE TABLE "medical_records" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"patient_id" varchar,
 	"appointment_id" uuid,
-	"doctor_id" varchar,
+	"doctor_id" uuid,
 	"treatment_plan" text,
 	"prescriptions" text,
 	"lab_request" text,
@@ -130,6 +131,7 @@ CREATE TABLE "patients" (
 	"service_consent" boolean,
 	"disclosure_consent" boolean,
 	"img" varchar,
+	"colorCode" varchar,
 	"created_at" timestamp with time zone DEFAULT now(),
 	"updated_at" timestamp with time zone DEFAULT now(),
 	CONSTRAINT "patients_id_unique" UNIQUE("id"),
@@ -158,7 +160,7 @@ CREATE TABLE "payments" (
 --> statement-breakpoint
 CREATE TABLE "ratings" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"staff_id" varchar,
+	"staff_id" uuid,
 	"patient_id" varchar,
 	"rating" integer,
 	"comment" text,
@@ -226,7 +228,7 @@ CREATE TABLE "vital_signs" (
 --> statement-breakpoint
 CREATE TABLE "working_days" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"doctor_id" varchar,
+	"doctor_id" uuid,
 	"day" varchar,
 	"start_time" varchar,
 	"close_time" varchar,
@@ -237,6 +239,7 @@ CREATE TABLE "working_days" (
 --> statement-breakpoint
 ALTER TABLE "appointments" ADD CONSTRAINT "appointments_patient_id_patients_id_fk" FOREIGN KEY ("patient_id") REFERENCES "public"."patients"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "appointments" ADD CONSTRAINT "appointments_doctor_id_doctors_id_fk" FOREIGN KEY ("doctor_id") REFERENCES "public"."doctors"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "diagnoses" ADD CONSTRAINT "diagnoses_patient_id_patients_id_fk" FOREIGN KEY ("patient_id") REFERENCES "public"."patients"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "diagnoses" ADD CONSTRAINT "diagnoses_medical_id_medical_records_id_fk" FOREIGN KEY ("medical_id") REFERENCES "public"."medical_records"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "diagnoses" ADD CONSTRAINT "diagnoses_doctor_id_doctors_id_fk" FOREIGN KEY ("doctor_id") REFERENCES "public"."doctors"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "lab_tests" ADD CONSTRAINT "lab_tests_record_id_medical_records_id_fk" FOREIGN KEY ("record_id") REFERENCES "public"."medical_records"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint

@@ -11,7 +11,7 @@ interface ActionsProps {
   status: string;
   patientId: string;
   doctorId: string;
-  appointmentId: number;
+  appointmentId: string;
 }
 
 export const AppointmentActionOptions = async ({
@@ -23,19 +23,19 @@ export const AppointmentActionOptions = async ({
 }: ActionsProps) => {
   const user = await auth();
   const isAdmin = await checkRole("admin");
-
+console.log("Patient ID", appointmentId);
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant="outline"
-          className="flex items-center justify-center rounded-full p-1"
+        
+          className="flex items-center justify-center rounded p-1 bg-green-500  hover:bg-green-300 hover:text-black "
         >
-          <EllipsisVertical size={16} className="text-sm text-gray-500" />
+          <EllipsisVertical size={16} className="text-sm text-white hover:text-black  rounded  " />
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-56 p-3 bg-white">
+      <PopoverContent className="w-56 p-3 bg-white rounded">
         <div className="space-y-3 flex flex-col items-start">
           <span className="text-gray-400 text-xs">Perform Actions</span>
           <Button
@@ -49,7 +49,7 @@ export const AppointmentActionOptions = async ({
             </Link>
           </Button>
 
-          {status !== "SCHEDULED" && (
+          {status !== "scheduled" && (
             <AppointmentActionDialog
               type="approve"
               id={appointmentId}
@@ -60,7 +60,7 @@ export const AppointmentActionOptions = async ({
             type="cancel"
             id={appointmentId}
             disabled={
-              status === "PENDING" &&
+              status === "pending" &&
               (isAdmin || user.userId === doctorId || user.userId === patientId)
             }
           />

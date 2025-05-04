@@ -86,7 +86,7 @@ const Appointments = async (props: {
       id: queryId!,
     });
 
-  if (!data) return null;
+   if (!data) return null;
 
   const renderItem = (item: DataProps) => {
     //const patient_name = `${item?.patient?.first_name} ${item?.patient?.last_name}`;
@@ -152,7 +152,7 @@ const Appointments = async (props: {
               patientId={item?.patient_id}
               doctorId={item?.doctor_id}
               status={item?.status}
-              appointmentId={Number(item.id)}
+              appointmentId={item?.id}
             />
           </div>
         </td>
@@ -187,9 +187,9 @@ const Appointments = async (props: {
       </div>
 
       <div className="mt-6">
-        <Table columns={columns} renderRow={renderItem} data={data} />
+        <Table columns={columns} renderRow={renderItem} data={data ?? []} />
 
-        {data?.length > 0 && (
+        {(data ?? []).length > 0 && (
           <Pagination
             totalRecords={totalRecord!}
             currentPage={currentPage!}

@@ -21,6 +21,7 @@ import { AppointmentAction } from "./appointment-action";
 import { formatDateTime } from "@/lib/utils";
 import { console } from "inspector";
 import { ProfileImage } from "./profile-image";
+import { MdPreview } from "react-icons/md";
 
 
 
@@ -35,10 +36,10 @@ export const ViewAppointment = async ({ id }: { id: string | undefined }) => {
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          variant="outline"
-          className="flex items-center justify-center rounded bg-blue-500/10 hover:underline text-blue-600 px-1.5 py-1 text-xs md:text-sm"
+          
+          className="flex items-center justify-center rounded bg-blue-600 hover:bg-blue-700 text-white px-1.5 py-1 text-xs md:text-sm"
         >
-          View
+           <MdPreview size={16} className="text-white" />
         </Button>
       </DialogTrigger>
 

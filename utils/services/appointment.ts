@@ -1,6 +1,6 @@
 import { db } from "@/database/drizzle";
 import { appointments, doctors, patients } from "@/database/schema";
-import { and, count, desc, eq, ilike, or } from "drizzle-orm";
+import { and, count, desc, eq, ilike, or, sql } from "drizzle-orm";
 
 
 
@@ -101,8 +101,8 @@ export function buildQuery(id?: string, search?: string) {
   if (id) {
     conditions.push(
       or(
-        eq(appointments.patient_id, id),
-        eq(appointments.doctor_id, id)
+      eq(appointments.patient_id, id),
+      eq(sql`${appointments.doctor_id}::text`, id)
       )
     );
   }

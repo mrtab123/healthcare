@@ -34,7 +34,7 @@ export const PatientRatingContainer = async ({ id }: { id?: string }) => {
   //   include: { patient: { select: { last_name: true, first_name: true } } },
   //   orderBy: { created_at: "desc" },
   // });
-console.log("PATIENT RATING", data);
+
   if (!data) return null;
 
   return (

@@ -28,10 +28,10 @@ const SearchInput = () => {
 
   return (
     <form onSubmit={handleSearch}>
-      <div className="hidden xl:flex items-center border border-gray-300 px-2 py-2 rounded-md focus-within:ring-2 focus-within:ring-blue-300 focus-within:border-blue-300">
-        <Search size={18} className="text-gray-400" />
+      <div className="hidden xl:flex items-center border border-gray-300 px-2 py-2 rounded focus-within:ring-2 focus-within:ring-blue-300 focus-within:border-blue-300">
+        <Search size={18} className="text-gray-400 rounded" />
         <input
-          className="outline-none px-2 text-sm"
+          className="outline-none px-2 text-sm rounded"
           placeholder="Search..."
           onChange={(e) => setSearchValue(e.target.value)}
         />

@@ -9,7 +9,7 @@ export const AppointmentContainer = async ({ id }: { id: string }) => {
 
   return (
     <div>
-      <BookAppointment data={data!} doctors={doctors!} />
+    <BookAppointment data={data!} doctors={doctors!} />
     </div>
   );
 };

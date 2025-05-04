@@ -51,7 +51,7 @@ boolean } from "drizzle-orm/pg-core";
   export const appointments = pgTable("appointments", {
     id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
     patient_id: varchar('patient_id').references(() => patients.id, { onDelete: "cascade" }),
-    doctor_id: varchar('doctor_id').references(() => doctors.id, { onDelete: "cascade" }),    
+    doctor_id: uuid('doctor_id').references(() => doctors.id, { onDelete: "cascade" }),    
     appointment_date : timestamp("appointment_date ", { withTimezone: true }).defaultNow(),
     time: varchar('time'),
     status: APPOINTMENT_ENUM("status").default("pending").notNull(),
@@ -106,6 +106,7 @@ boolean } from "drizzle-orm/pg-core";
       service_consent: boolean("service_consent"),
       disclosure_consent: boolean("disclosure_consent"),
       img: varchar("img"),
+      colorCode: varchar('colorCode'),
 
       
       
@@ -118,7 +119,7 @@ boolean } from "drizzle-orm/pg-core";
     
   // Doctors Table
   export const doctors = pgTable('doctors', {    
-    id: varchar("id", { length: 255 }).notNull().unique(),    
+    id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
     email: varchar('email').unique(),
     name: varchar('name'),
     specialization: varchar('specialization'),
@@ -203,7 +204,7 @@ export const services = pgTable('services', {
 // Working Days Table
 export const workingDays = pgTable('working_days', {
   id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
-  doctor_id: varchar('doctor_id').references(() => doctors.id, { onDelete: 'cascade' }),
+  doctor_id: uuid('doctor_id').references(() => doctors.id, { onDelete: 'cascade' }),
   day: varchar('day'),
   start_time: varchar('start_time'),
   close_time: varchar('close_time'),
@@ -215,9 +216,9 @@ export const workingDays = pgTable('working_days', {
 // Diagnosis Table
 export const diagnoses = pgTable('diagnoses', {
   id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
-  // patient_id: varchar('patient_id').references(() => patients.id, { onDelete: 'cascade' }),
+  patient_id: varchar('patient_id').references(() => patients.id, { onDelete: 'cascade' }),
   medical_id: uuid('medical_id').references(() => medicalRecords.id, { onDelete: 'cascade' }), 
-  doctor_id: varchar('doctor_id').references(() => doctors.id, { onDelete: 'cascade' }),
+  doctor_id: uuid('doctor_id').references(() => doctors.id, { onDelete: 'cascade' }),
   symptoms: text('symptoms'),
   diagnosis: text('diagnosis'),
   notes: text('notes'),
@@ -265,7 +266,7 @@ export const medicalRecords = pgTable('medical_records', {
   id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
    patient_id: varchar('patient_id').references(() => patients.id, { onDelete: 'cascade' }),
   appointment_id: uuid('appointment_id').references(() => appointments.id, { onDelete: 'cascade' }),
-  doctor_id: varchar('doctor_id').references(() => doctors.id),
+  doctor_id: uuid('doctor_id').references(() => doctors.id),
   treatment_plan: text('treatment_plan'),
   prescriptions: text('prescriptions'),
   lab_request: text('lab_request'),
@@ -289,7 +290,7 @@ export const auditLogs = pgTable('audit_logs', {
 
 export const ratings = pgTable('ratings', {
   id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
-  staff_id: varchar('staff_id').references(() => doctors.id, { onDelete: 'cascade' }), // assuming `staff_id` is doctor ID
+  staff_id: uuid('staff_id').references(() => doctors.id, { onDelete: 'cascade' }), // assuming `staff_id` is doctor ID
   patient_id: varchar('patient_id').references(() => patients.id, { onDelete: 'cascade' }),
   rating: integer('rating'),
   comment: text('comment'),
