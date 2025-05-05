@@ -19,13 +19,17 @@ export const MedicalHistoryContainer = async ({ id, patientId }: DataProps) => {
           result: labTests.result,
           status: labTests.status,
           notes: labTests.notes,
+          diagnosis: {
+            doctor_id: diagnoses.doctor_id,
+          }
         })
         .from(medicalRecords)
         .innerJoin(diagnoses, eq(diagnoses.medical_id, medicalRecords.patient_id ))
         .innerJoin(labTests, eq(labTests.record_id, medicalRecords.id ))
         .where(eq(medicalRecords.patient_id, patientId)).orderBy(desc(medicalRecords.created_at));
 
-console.log("medical history data", data);
+
+console.log("medical history datasssss", data);
 
   // const data = await db.medicalRecords.findMany({
   //   where: { patient_id: patientId },

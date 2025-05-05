@@ -37,6 +37,22 @@ declare interface PatientsParams extends CreateUserParams {
   privacy_consent: boolean;
   service_consent: boolean;
   disclosure_consent: boolean;
+  img:string
+  colorCode:string
+  created_at: Date;
+  updated_at: Date;
+}
+
+declare interface MedicalRecords {
+  patient_id: string;
+  appointment_id:string;
+  doctor_id: string;
+  treatment_plan: string;
+  prescriptions: string;
+  lab_request: string;
+  notes: string;
+    created_at:Date;
+  updated_at:Date;
 }
 
 declare interface AppointmentParams {
@@ -67,6 +83,36 @@ export type AppointmentsChartProps = {
   appointment: number;
   completed: number;
 }[];
+
+
+export type Diagnosis = {
+  
+  patient_id: string;
+  medical_id: string;
+  doctor_id: string;
+  symptoms: string;
+  diagnosis: string;
+  notes: string;
+  follow_up_plan: string;
+  prescribed_medications: string;
+
+
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type LabTest = { 
+  record_id: string;
+  service_id: string;
+  test_date: date;
+  result: string;
+  status: string;
+  notes: string;
+  
+  createdAt: Date;
+  updatedAt: Date; 
+};
+
 
 
 export type Appointment = {

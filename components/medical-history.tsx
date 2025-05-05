@@ -1,21 +1,22 @@
-import { Diagnosis, LabTest, MedicalRecords, Patient } from "@prisma/client";
+
 import { BriefcaseBusiness } from "lucide-react";
 import React from "react";
 import { Table } from "./tables/table";
 import { ProfileImage } from "./profile-image";
 import { formatDateTime } from "@/utils";
 import { ViewAction } from "./action-options";
-import { MedicalHistoryDialog } from "./medical-history-dialog";
+// import { MedicalHistoryDialog } from "./medical-history-dialog";
+import { Diagnosis, LabTest, MedicalRecords, Patient } from "@/types";
 
 export interface ExtendedMedicalHistory extends MedicalRecords {
   patient?: Patient;
-  diagnosis: Diagnosis[];
-  lab_test: LabTest[];
+  diagnosis: Diagnosis;
+  lab_test: LabTest;
   index?: number;
 }
 
 interface DataProps {
-  data: ExtendedMedicalHistory[];
+  data: ExtendedMedicalHistory;
   isShowProfile?: boolean;
 }
 
@@ -63,7 +64,7 @@ export const MedicalHistory = ({ data, isShowProfile }: DataProps) => {
         {isShowProfile && (
           <td className="flex items-center gap-2 2xl:gap-4 py-2 xl:py-4">
             <ProfileImage
-              url={item?.patient?.img!}
+              url={item?.patient?.img}
               name={item?.patient?.first_name + " " + item?.patient?.last_name}
             />
             <div>
