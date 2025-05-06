@@ -3,24 +3,26 @@ import { BriefcaseBusiness } from "lucide-react";
 import React from "react";
 import { Table } from "./tables/table";
 import { ProfileImage } from "./profile-image";
-import { formatDateTime } from "@/utils";
+
 import { ViewAction } from "./action-options";
 // import { MedicalHistoryDialog } from "./medical-history-dialog";
-import { Diagnosis, LabTest, MedicalRecords, Patient } from "@/types";
+import { Diagnosis, LabTest, MedicalRecord, Patient } from "@/types";
+import { MedicalHistoryDialog } from "./medical-history-dialog";
+import { formatDateTime } from "@/lib/utils";
 
-export interface ExtendedMedicalHistory extends MedicalRecords {
-  patient?: Patient;
-  diagnosis: Diagnosis;
-  lab_test: LabTest;
-  index?: number;
-}
+// export interface ExtendedMedicalHistory extends MedicalRecord {
+//   patient?: Patient;
+//   diagnosis?: Diagnosis;
+//   lab_test: LabTest;
 
+// }
 interface DataProps {
-  data: ExtendedMedicalHistory;
+  data: MedicalRecord[];
   isShowProfile?: boolean;
 }
 
 export const MedicalHistory = ({ data, isShowProfile }: DataProps) => {
+  console.log("medical history data", data);
   const columns = [
     {
       header: "No",
@@ -53,18 +55,18 @@ export const MedicalHistory = ({ data, isShowProfile }: DataProps) => {
     },
   ];
 
-  const renderRow = (item: ExtendedMedicalHistory) => {
+  const renderRow = (item: MedicalRecord) => {
     return (
       <tr
-        key={item.id}
+        key={item?.id}
         className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-slate-50"
       >
-        <td className="py-2 xl:py-6"># {item?.id}</td>
+        <td className="py-2 xl:py-6"># 1</td>
 
         {isShowProfile && (
           <td className="flex items-center gap-2 2xl:gap-4 py-2 xl:py-4">
             <ProfileImage
-              url={item?.patient?.img}
+               url={item?.patient?.img!}
               name={item?.patient?.first_name + " " + item?.patient?.last_name}
             />
             <div>
@@ -78,10 +80,10 @@ export const MedicalHistory = ({ data, isShowProfile }: DataProps) => {
           </td>
         )}
 
-        <td className="">{formatDateTime(item?.created_at.toString())}</td>
+        <td className="">{formatDateTime(item?.created_at).dateTime}</td>
 
         <td className="hidden  items-center py-2  xl:table-cell">
-          {item?.doctor_id}
+          {item?.doctor.name}
         </td>
         <td className="hidden lg:table-cell">
           {item?.diagnosis?.length === 0 ? (
@@ -120,7 +122,7 @@ export const MedicalHistory = ({ data, isShowProfile }: DataProps) => {
         </td>
 
         <td>
-          <ViewAction href={`/record/appointments/${item?.appointment_id}`} />
+          {/* <ViewAction href={`/record/appointments/${item?.appointment_id}`} /> */}
         </td>
       </tr>
     );

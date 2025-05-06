@@ -106,7 +106,7 @@ export function buildQuery(id?: string, search?: string) {
       )
     );
   }
-  console.log("conditions", conditions);
+ 
   // Return combined condition or undefined if no filters
   if (conditions.length === 0) return undefined;
   if (conditions.length === 1) return conditions[0];
@@ -187,7 +187,7 @@ export async function getPatientAppointments({
         status: 200,
       };
     }
-    console.log("data", data);
+ 
 
     const totalPages = Math.ceil(totalRecord / LIMIT);
 

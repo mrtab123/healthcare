@@ -23,7 +23,7 @@ export const AppointmentActionOptions = async ({
 }: ActionsProps) => {
   const user = await auth();
   const isAdmin = await checkRole("admin");
-console.log("Patient ID", appointmentId);
+
   return (
     <Popover>
       <PopoverTrigger asChild>

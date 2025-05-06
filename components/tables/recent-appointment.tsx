@@ -46,7 +46,7 @@ export const RecentAppointments = ({ data }: DataProps) => {
 
   const renderRow = (item: Appointment) => {
     const name = item?.patient?.first_name + " " + item?.patient?.last_name;
-    console.log("RecentAppointmentsID", item.id);
+  
     return (
       <tr
         key={item?.id}

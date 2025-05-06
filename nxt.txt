@@ -46,7 +46,7 @@ NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/mrtabs
 NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY=public_iyaOSGvzEzeJpgoIGA7jjv0UbZg=
 IMAGEKIT_PRIVATE_KEY=private_7DNA4krycGLaLSY6r0k5WRnmDH8=
 
-DATABASE_URL=postgresql://mpd_deployment_owner:npg_T5wsc1EHnGbK@ep-shy-mountain-a1s1ubes-pooler.ap-southeast-1.aws.neon.tech/mpd_deployment?sslmode=require
+DATABASE_URL=postgresql://healthcare_owner:npg_KYxNf4T5LukD@ep-super-paper-a1w2prwi-pooler.ap-southeast-1.aws.neon.tech/healthcare?sslmode=require
 NEXT_PUBLIC_API_ENDPOINT=http://localhost:3000
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_ZXF1YWwtY3JpY2tldC04OS5jbGVyay5hY2NvdW50cy5kZXYk
 CLERK_SECRET_KEY=sk_test_GF3JHs49tNWOMYQHYrWyliWDzOxcvmFYhzZXulLHtH

@@ -231,7 +231,6 @@ export async function getPatientDashboardStatistics(id: string) {
             //   ],
             // })) as AvailableDoctorProps2[];
 
-console.log("Available Doctors", availableDoctors);
     
 
 
@@ -346,7 +345,7 @@ export async function getPatientFullDataById(id: string) {
     }
     const lastVisit =latestAppointment[0]?.appointment_date || null;
 
-    console.log("Patient Data", patient[0]);
+   // console.log("Patient Data", patient[0]);
     return {
       success: true,
       data: {

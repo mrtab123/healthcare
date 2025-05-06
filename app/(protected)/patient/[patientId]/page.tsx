@@ -1,4 +1,5 @@
 // import { MedicalHistoryContainer } from "@/components/medical-history-container";
+import { MedicalHistoryContainer } from "@/components/medical-history-container";
 import { PatientRatingContainer } from "@/components/patient-rating-container";
 import { ProfileImage } from "@/components/profile-image";
 import { Card } from "@/components/ui/card";
@@ -19,8 +20,7 @@ const PatientProfile = async (props: ParamsProps) => {
   const searchParams = await props.searchParams;
   const params = await props.params;
 
-  console.log("Params", params);
-  console.log("Search Params", searchParams);
+ 
   let id = params.patientId;
   let patientId = params.patientId;
   const cat = searchParams?.cat || "medical-history";
@@ -107,9 +107,9 @@ const PatientProfile = async (props: ParamsProps) => {
         </div>
 
         <div className="mt-10">
-          {/* {cat === "medical-history" && ( */}
-              {/* <MedicalHistoryContainer patientId={id} /> */}
-           {/* )} */}
+          {cat === "medical-history" && ( 
+               <MedicalHistoryContainer patientId={id} /> 
+            )}
             
 
           {/* {cat === "payments" && <Payments patientId={id!} />} */}

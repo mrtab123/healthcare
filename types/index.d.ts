@@ -233,23 +233,67 @@ interface AvailableDoctorProps2 {
    
   }[];
 }
-interface Doctor {
-  data: {
-      id: string;
-      email: string;
-      name: string;
-      specialization: string
-      license_number:string;
-      phone: string;
-      address: string,
-      department: string;
-      img: string;
-      colorCode: string;
-      availablity_status: string;
-      type: string;
-      created_at: Date;
-      updated_at: Date;
+// interface Doctor {
+//   data: {
+//       id: string;
+//       email: string;
+//       name: string;
+//       specialization: string
+//       license_number:string;
+//       phone: string;
+//       address: string,
+//       department: string;
+//       img: string;
+//       colorCode: string;
+//       availablity_status: string;
+//       type: string;
+//       created_at: Date;
+//       updated_at: Date;
 
    
-  }[];
-}
+//   }[];
+// }
+
+interface MedicalRecord {
+  id: string;
+  patient_id: string;
+  doctor_id: string;
+  appointment_id: string;
+  treatment_plan: string;
+  prescriptions: string;
+  lab_request: string;
+  notes: string;
+  created_at: Date;
+  updated_at: Date;
+
+  patient: Patient
+  lab_test: {
+    id: string;
+    test_date: Date;
+    result: string;
+    status: string;
+    notes: string;
+    created_at: Date;
+    updated_at: Date;
+  };
+  diagnosis: {
+    id: string;
+    symptoms: string;
+    diagnosis: string;
+    notes: string;
+    follow_up_plan: string;
+    prescribed_medications: string;
+    created_at: Date;
+    updated_at: Date;
+    
+  };
+  doctor: {
+    id: string;
+    name: string;
+    specialization: string;
+    img: string;
+    colorCode: string;
+    created_at: Date;
+    updated_at: Date;
+  };
+}[];
