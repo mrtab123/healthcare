@@ -25,15 +25,15 @@ console.log("Doctors",userId);
     const todayDate = new Date().getDay();
     const today = daysOfWeek[todayDate];
 
-    const [totalPatient, totalNurses, appointment, doctor] =
+    const [[{ total: totalPatient }], [{ total2: totalNurses }], appointment, doctor] =
       await Promise.all([
 
         await db
-          .select({ total: count() })
+          .select({ total: count(patients.id) })
           .from(patients),
 
            await db
-  .select({ total: count() })
+  .select({ total2: count() })
   .from(staff)
   .where(eq(staff.role, "NURSE")),
 
@@ -94,13 +94,12 @@ console.log("Doctors",userId);
   .innerJoin(doctors, eq(appointments.doctor_id, doctors.id))
   .innerJoin(patients, eq(appointments.patient_id, patients.id))
  
-  .where (
-        and
-       
-        eq(appointments.doctor_id, userId!),
-        lte(appointments.appointment_date, new Date()),
-         )
-
+  .where(
+    and(
+      eq(appointments.doctor_id, userId!),
+      lte(appointments.appointment_date, new Date())
+    )
+  )
   .orderBy(desc(appointments.appointment_date)),
 
 
@@ -151,12 +150,12 @@ console.log("Doctors",userId);
       appointment
     );
 
-    const last5Records = appointments.slice(0, 5);
+    const last5Records = appointment.slice(0, 5);
     // const availableDoctors = doctors.slice(0, 5);
 
     return {
       totalNurses,
-      totalPatient,
+    totalPatient,
       appointmentCounts,
       last5Records,
       availableDoctors: doctor,

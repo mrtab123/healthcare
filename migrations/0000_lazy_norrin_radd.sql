@@ -8,7 +8,7 @@ CREATE TYPE "public"."status" AS ENUM('PENDING', 'APPROVED', 'REJECTED');--> sta
 CREATE TABLE "appointments" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"patient_id" varchar,
-	"doctor_id" uuid,
+	"doctor_id" varchar,
 	"appointment_date " timestamp with time zone DEFAULT now(),
 	"time" varchar,
 	"status" "appointment" DEFAULT 'pending' NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE "diagnoses" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"patient_id" varchar,
 	"medical_id" uuid,
-	"doctor_id" uuid,
+	"doctor_id" varchar,
 	"symptoms" text,
 	"diagnosis" text,
 	"notes" text,
@@ -49,7 +49,7 @@ CREATE TABLE "diagnoses" (
 );
 --> statement-breakpoint
 CREATE TABLE "doctors" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"id" varchar(255) NOT NULL,
 	"email" varchar,
 	"name" varchar,
 	"specialization" varchar,
@@ -85,7 +85,7 @@ CREATE TABLE "medical_records" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"patient_id" varchar,
 	"appointment_id" uuid,
-	"doctor_id" uuid,
+	"doctor_id" varchar,
 	"treatment_plan" text,
 	"prescriptions" text,
 	"lab_request" text,
@@ -160,7 +160,7 @@ CREATE TABLE "payments" (
 --> statement-breakpoint
 CREATE TABLE "ratings" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"staff_id" uuid,
+	"staff_id" varchar,
 	"patient_id" varchar,
 	"rating" integer,
 	"comment" text,
@@ -228,7 +228,7 @@ CREATE TABLE "vital_signs" (
 --> statement-breakpoint
 CREATE TABLE "working_days" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"doctor_id" uuid,
+	"doctor_id" varchar,
 	"day" varchar,
 	"start_time" varchar,
 	"close_time" varchar,

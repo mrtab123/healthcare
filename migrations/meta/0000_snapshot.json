@@ -1,5 +1,5 @@
 {
-  "id": "2fbcc1fe-9f69-478a-b72e-e7a43e41678a",
+  "id": "d1deb72e-206b-404e-b402-e11acc05d18b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -23,7 +23,7 @@
         },
         "doctor_id": {
           "name": "doctor_id",
-          "type": "uuid",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -227,7 +227,7 @@
         },
         "doctor_id": {
           "name": "doctor_id",
-          "type": "uuid",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -338,10 +338,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
         },
         "email": {
           "name": "email",
@@ -586,7 +585,7 @@
         },
         "doctor_id": {
           "name": "doctor_id",
-          "type": "uuid",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -1139,7 +1138,7 @@
         },
         "staff_id": {
           "name": "staff_id",
-          "type": "uuid",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -1598,7 +1597,7 @@
         },
         "doctor_id": {
           "name": "doctor_id",
-          "type": "uuid",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
