@@ -169,20 +169,7 @@ export async function getPatientDashboardStatistics(id: string) {
   
 
 
-    
-    // const mappedAppointments = appointment
-    //   .map((item) => ({
-    //     status: item.appointment.status,
-    //     appointment_date: item.appointment.appointment_date,
-    //   }))
-    //   .filter((item) => item.appointment_date !== null) as Appointment[];
-
-    // const validAppointments = appointment
-    //   .filter((item) => item.appointment_date !== null)
-    //   .map((item) => ({
-    //     ...item,
-    //     appointment_date: item.appointment_date as Date,
-    //   })) as Appointment[];
+  ;
 
     const { appointmentCounts, monthlyData } = await processAppointments(appointment);
     

@@ -3,7 +3,8 @@ import { auth } from "@clerk/nextjs/server";
 import { daysOfWeek } from "..";
 import { processAppointments } from "./patient";
 import { db } from "@/database/drizzle";
-import { doctors } from "@/database/schema";
+import { appointments, doctors, patients, staff, workingDays } from "@/database/schema";
+import { and, count, desc, eq, ilike, lte  } from "drizzle-orm";
 
 export async function getDoctors() {
   try {
@@ -20,60 +21,134 @@ export async function getDoctors() {
 export async function getDoctorDashboardStats() {
   try {
     const { userId } = await auth();
-
+console.log("Doctors",userId);
     const todayDate = new Date().getDay();
     const today = daysOfWeek[todayDate];
 
-    const [totalPatient, totalNurses, appointments, doctors] =
+    const [totalPatient, totalNurses, appointment, doctor] =
       await Promise.all([
-        db.patient.count(),
-        db.staff.count({ where: { role: "NURSE" } }),
-        db.appointment.findMany({
-          where: { doctor_id: userId!, appointment_date: { lte: new Date() } },
-          include: {
-            patient: {
-              select: {
-                id: true,
-                first_name: true,
-                last_name: true,
-                gender: true,
-                date_of_birth: true,
-                colorCode: true,
-                img: true,
-              },
-            },
-            doctor: {
-              select: {
-                id: true,
-                name: true,
-                specialization: true,
-                img: true,
-                colorCode: true,
-              },
-            },
-          },
-          orderBy: { appointment_date: "desc" },
-        }),
-        db.doctor.findMany({
-          where: {
-            working_days: {
-              some: { day: { equals: today, mode: "insensitive" } },
-            },
-          },
-          select: {
-            id: true,
-            name: true,
-            specialization: true,
-            img: true,
-            colorCode: true,
-            working_days: true,
-          },
-          take: 5,
-        }),
-      ]);
+
+        await db
+          .select({ total: count() })
+          .from(patients),
+
+           await db
+  .select({ total: count() })
+  .from(staff)
+  .where(eq(staff.role, "NURSE")),
+
+        // db.patient.count(),
+        // db.staff.count({ where: { role: "NURSE" } }),        
+        // db.appointment.findMany({
+        //   where: { doctor_id: userId!, appointment_date: { lte: new Date() } },
+        //   include: {
+        //     patient: {
+        //       select: {
+        //         id: true,
+        //         first_name: true,
+        //         last_name: true,
+        //         gender: true,
+        //         date_of_birth: true,
+        //         colorCode: true,
+        //         img: true,
+        //       },
+        //     },
+        //     doctor: {
+        //       select: {
+        //         id: true,
+        //         name: true,
+        //         specialization: true,
+        //         img: true,
+        //         colorCode: true,
+        //       },
+        //     },
+        //   },
+        //   orderBy: { appointment_date: "desc" },
+        // }),
+
+
+      await db
+  .select({
+    id: appointments.id,
+    status: appointments.status,
+    appointment_date: appointments.appointment_date,
+    time: appointments.time,
+    doctor: {
+      id: doctors.id,
+      name: doctors.name,
+      specialization: doctors.specialization,
+      img: doctors.img,
+      colorCode: doctors.colorCode,
+    },
+    patient: {
+      id: patients.id,
+      first_name: patients.first_name,
+      last_name: patients.last_name,
+      gender: patients.gender,
+      date_of_birth: patients.date_of_birth,
+      colorCode: patients.colorCode,
+      img: patients.img,
+    },
+  })
+  .from(appointments)
+  .innerJoin(doctors, eq(appointments.doctor_id, doctors.id))
+  .innerJoin(patients, eq(appointments.patient_id, patients.id))
+ 
+  .where (
+        and
+       
+        eq(appointments.doctor_id, userId!),
+        lte(appointments.appointment_date, new Date()),
+         )
+
+  .orderBy(desc(appointments.appointment_date)),
+
+
+      //   db.doctor.findMany({
+      //     where: {
+      //       working_days: {
+      //         some: { day: { equals: today, mode: "insensitive" } },
+      //       },
+      //     },
+      //     select: {
+      //       id: true,
+      //       name: true,
+      //       specialization: true,
+      //       img: true,
+      //       colorCode: true,
+      //       working_days: true,
+      //     },
+      //     take: 5,
+      //   }),
+
+
+
+     await db.select(
+      {
+                 id: doctors.id,
+                name: doctors.name,
+                specialization: doctors.specialization,
+                img: doctors.img,
+                colorCode: doctors.colorCode, 
+                day: workingDays.day,
+                start_time: workingDays.start_time,
+                close_time: workingDays.close_time
+       
+    }
+    ).from(doctors)
+    .innerJoin(workingDays, eq(doctors.id, workingDays.doctor_id))
+     .where(ilike(workingDays.day, today)) // case-insensitive match
+    .limit(4).orderBy(desc(workingDays.start_time))
+
+
+
+
+
+
+       ]);
 
     const { appointmentCounts, monthlyData } = await processAppointments(
-      appointments
+      appointment
     );
 
     const last5Records = appointments.slice(0, 5);
@@ -84,8 +159,8 @@ export async function getDoctorDashboardStats() {
       totalPatient,
       appointmentCounts,
       last5Records,
-      availableDoctors: doctors,
-      totalAppointment: appointments?.length,
+      availableDoctors: doctor,
+      totalAppointment: appointment?.length,
       monthlyData,
     };
   } catch (error) {
