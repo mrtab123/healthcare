@@ -78,7 +78,7 @@ const PatientProfile = async (props: ParamsProps) => {
               />
               <SmallCard label={"Phone Number"} value={data?.phone || "N/A"} />
             </div>
-   ,
+   
             <div className="flex flex-col md:flex-row md:flex-wrap md:items-center xl:justify-between gap-y-4 md:gap-x-0">
               <SmallCard label="Marital Status" value={data?.marital_status || "N/A"} />
               <SmallCard label="Blood Group" value={data?.blood_group || "N/A"} />
