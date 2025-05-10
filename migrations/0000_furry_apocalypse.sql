@@ -1,9 +1,9 @@
 CREATE TYPE "public"."appointment" AS ENUM('scheduled', 'completed', 'cancelled', 'pending');--> statement-breakpoint
 CREATE TYPE "public"."gender" AS ENUM('MALE', 'FEMALE');--> statement-breakpoint
-CREATE TYPE "public"."jobtype" AS ENUM('FULL', 'PART');--> statement-breakpoint
-CREATE TYPE "public"."paymentmethod" AS ENUM('CASH', 'CARD');--> statement-breakpoint
-CREATE TYPE "public"."paymentstatus" AS ENUM('PAID', 'UNPAID', 'PART');--> statement-breakpoint
-CREATE TYPE "public"."role" AS ENUM('USER', 'ADMIN', 'NURSE', 'DOCTOR', 'LAB_TECHNICIAN', 'PATIENT', 'CASHIER');--> statement-breakpoint
+CREATE TYPE "public"."jobtype" AS ENUM('full', 'part');--> statement-breakpoint
+CREATE TYPE "public"."paymentmethod" AS ENUM('cash', 'card');--> statement-breakpoint
+CREATE TYPE "public"."paymentstatus" AS ENUM('paid', 'unpaid', 'part');--> statement-breakpoint
+CREATE TYPE "public"."role" AS ENUM('user', 'admin', 'nurse', 'doctor', 'lab_technician', 'patient', 'cashier');--> statement-breakpoint
 CREATE TYPE "public"."status" AS ENUM('PENDING', 'APPROVED', 'REJECTED');--> statement-breakpoint
 CREATE TABLE "appointments" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE "doctors" (
 	"img" varchar,
 	"colorCode" varchar,
 	"availability_status" varchar,
-	"type" "jobtype" DEFAULT 'FULL',
+	"type" "jobtype" DEFAULT 'full',
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now(),
 	CONSTRAINT "doctors_id_unique" UNIQUE("id"),
@@ -148,9 +148,9 @@ CREATE TABLE "payments" (
 	"discount" real,
 	"total_amount" real,
 	"amount_paid" real,
-	"role" "role" DEFAULT 'ADMIN',
-	"payment_status" "paymentstatus" DEFAULT 'UNPAID',
-	"payment_method" "paymentmethod" DEFAULT 'CASH',
+	"role" "role" DEFAULT 'admin',
+	"payment_status" "paymentstatus" DEFAULT 'unpaid',
+	"payment_method" "paymentmethod" DEFAULT 'cash',
 	"receipt_number" serial NOT NULL,
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now(),
@@ -189,7 +189,7 @@ CREATE TABLE "staff" (
 	"img" varchar,
 	"license_number" varchar,
 	"colorCode" varchar,
-	"role" "role" DEFAULT 'ADMIN',
+	"role" "role" DEFAULT 'admin',
 	"status" "status" DEFAULT 'PENDING',
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now(),
@@ -203,7 +203,7 @@ CREATE TABLE "users" (
 	"email" text NOT NULL,
 	"password" text NOT NULL,
 	"status" "status" DEFAULT 'PENDING',
-	"role" "role" DEFAULT 'USER',
+	"role" "role" DEFAULT 'user',
 	"last_activity_date" date DEFAULT now(),
 	"created_at" timestamp with time zone DEFAULT now(),
 	CONSTRAINT "users_id_unique" UNIQUE("id"),

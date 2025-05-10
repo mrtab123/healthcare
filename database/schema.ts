@@ -18,19 +18,19 @@ boolean } from "drizzle-orm/pg-core";
     "REJECTED",
   ]);
   export const JOBTYPE_ENUM = pgEnum("jobtype", [
-    "FULL",
-    "PART",
+    "full",
+    "part",
   ]);
 
   export const ROLE_ENUM = pgEnum("role",
      [
-      "USER", 
-      "ADMIN",
-      "NURSE", 
-      "DOCTOR",
-      "LAB_TECHNICIAN", 
-      "PATIENT",
-      "CASHIER",         
+      "user", 
+      "admin",
+      "nurse", 
+      "doctor",
+      "lab_technician", 
+      "patient",
+      "cashier",         
     ]
     );
   export const GENDER_ENUM = pgEnum("gender", ["MALE", "FEMALE"]);
@@ -43,8 +43,8 @@ boolean } from "drizzle-orm/pg-core";
    
   ]);
 
-  export const PAYMENTMETHOD_ENUM = pgEnum("paymentmethod", ["CASH", "CARD"]);
-  export const PAYMENTSTATUS_ENUM = pgEnum("paymentstatus", ["PAID", "UNPAID","PART"]);
+  export const PAYMENTMETHOD_ENUM = pgEnum("paymentmethod", ["cash", "card"]);
+  export const PAYMENTSTATUS_ENUM = pgEnum("paymentstatus", ["paid", "unpaid","part"]);
 
 
 
@@ -71,7 +71,7 @@ boolean } from "drizzle-orm/pg-core";
       email: text("email").notNull().unique(),      
       password: text("password").notNull(),    
       status: STATUS_ENUM("status").default("PENDING"),
-      role: ROLE_ENUM("role").default("USER"),
+      role: ROLE_ENUM("role").default("user"),
       lastActivityDate: date("last_activity_date").defaultNow(),
       createdAt: timestamp("created_at", {
         withTimezone: true,
@@ -130,7 +130,7 @@ boolean } from "drizzle-orm/pg-core";
     img: varchar('img'),
     colorCode: varchar('colorCode'),
     availability_status: varchar('availability_status'),
-    type: JOBTYPE_ENUM("type").default("FULL"),
+    type: JOBTYPE_ENUM("type").default("full"),
     created_at: timestamp('created_at').defaultNow(),
     updated_at: timestamp('updated_at').defaultNow(),
   });
@@ -146,7 +146,7 @@ boolean } from "drizzle-orm/pg-core";
   license_number: varchar('license_number'),
   colorCode: varchar('colorCode'),
   
-  role: ROLE_ENUM("role").default("ADMIN"),
+  role: ROLE_ENUM("role").default("admin"),
   status: STATUS_ENUM("status").default("PENDING"),
   created_at: timestamp('created_at').defaultNow(),
   updated_at: timestamp('updated_at').defaultNow(),
@@ -163,9 +163,9 @@ export const payments = pgTable('payments', {
   discount: real('discount'),
   total_amount: real('total_amount'),
   amount_paid: real('amount_paid'),
-  role: ROLE_ENUM("role").default("ADMIN"),
-  payment_status: PAYMENTSTATUS_ENUM("payment_status").default("UNPAID"),
-  payment_method: PAYMENTMETHOD_ENUM("payment_method").default("CASH"),  
+  role: ROLE_ENUM("role").default("admin"),
+  payment_status: PAYMENTSTATUS_ENUM("payment_status").default("unpaid"),
+  payment_method: PAYMENTMETHOD_ENUM("payment_method").default("cash"),  
   receipt_number: serial('receipt_number'),
   created_at: timestamp('created_at').defaultNow(),
   updated_at: timestamp('updated_at').defaultNow(),

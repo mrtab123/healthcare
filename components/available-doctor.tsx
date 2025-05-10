@@ -8,33 +8,78 @@ import { ProfileImage } from "./profile-image";
 import { daysOfWeek } from "@/utils";
 import { cn } from "@/lib/utils";
 import { AvailableDoctorProps, AvailableDoctorProps2 } from "@/types";
+import { db } from "@/database/drizzle";
+import { doctors, workingDays } from "@/database/schema";
+import { and, desc, eq, ilike } from "drizzle-orm";
 
-// const getToday = () => {
-//   const today = new Date().getDay();
-//   return daysOfWeek[today].toLowerCase();
-// };
+const getToday = () => {
+  const today = new Date().getDay();
+  return daysOfWeek[today].toLowerCase();
+};
 
-// const todayDay = getToday();
+const todayDay = getToday();
 
-// interface Days {
-//   day: string;
-//   start_time: string;
-//   close_time: string;
-// }
+interface Days {
+  day: string;
+  start_time: string;
+  close_time: string;
+}
 
 // interface DataProps {
 //   data: AvailableDoctorProps2;
 // }
 
-// export const availableDays = ({ data }: { data: Days[] }) => {
-//   const isTodayWorkingDay = data.find(
-//     (dayObj) => dayObj.day.toLowerCase() === todayDay
-//   );
+export const availableDays = async(id: string) => {
+  const todayDay = getToday();
 
-//   return isTodayWorkingDay
-//   ? `${isTodayWorkingDay.start_time} - ${isTodayWorkingDay.close_time}`
+  const data =  await db.select(
+        {  
+           start_time: workingDays.start_time,
+           close_time: workingDays.close_time         
+      }
+      ).from(workingDays)
+      .innerJoin(doctors, eq(doctors.id, workingDays.doctor_id))
+       
+        .where(
+          and(
+            eq(workingDays.doctor_id, id!),
+            ilike(workingDays.day, todayDay))
+          )    
+         .limit(4).orderBy(desc(workingDays.start_time))
+       
+
+
+        
+        return (
+          <div>
+           {data.map((dayObj, index) => (
+            <p  key={index}>
+               {dayObj.start_time} - {dayObj.close_time}
+            </p>
+            ))}
+            </div>
+
+
+        )
+        
+        
+       
+    };
+
+  // const todaySchedule = data.find(
+  //   (item) => item.day.toLowerCase() === todayDay
+  // );
+
+//   if (!data) return "Not Available";
+
+//   return data.day.toLowerCase() === todayDay
+//   ? `${data.start_time} - ${data.close_time}`
 //   : "Not Available";
 // };
+
+
+
+
 export const AvailableDoctors = async ({ data }: AvailableDoctorProps2) => {
   return (
     <div className="bg-white rounded-xl p-4">

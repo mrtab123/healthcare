@@ -1,5 +1,5 @@
 {
-  "id": "d1deb72e-206b-404e-b402-e11acc05d18b",
+  "id": "f7d00a22-61c3-461d-9177-9774cb285768",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -408,7 +408,7 @@
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
-          "default": "'FULL'"
+          "default": "'full'"
         },
         "created_at": {
           "name": "created_at",
@@ -1036,7 +1036,7 @@
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
-          "default": "'ADMIN'"
+          "default": "'admin'"
         },
         "payment_status": {
           "name": "payment_status",
@@ -1044,7 +1044,7 @@
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
-          "default": "'UNPAID'"
+          "default": "'unpaid'"
         },
         "payment_method": {
           "name": "payment_method",
@@ -1052,7 +1052,7 @@
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
-          "default": "'CASH'"
+          "default": "'cash'"
         },
         "receipt_number": {
           "name": "receipt_number",
@@ -1343,7 +1343,7 @@
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
-          "default": "'ADMIN'"
+          "default": "'admin'"
         },
         "status": {
           "name": "status",
@@ -1434,7 +1434,7 @@
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
-          "default": "'USER'"
+          "default": "'user'"
         },
         "last_activity_date": {
           "name": "last_activity_date",
@@ -1688,38 +1688,38 @@
       "name": "jobtype",
       "schema": "public",
       "values": [
-        "FULL",
-        "PART"
+        "full",
+        "part"
       ]
     },
     "public.paymentmethod": {
       "name": "paymentmethod",
       "schema": "public",
       "values": [
-        "CASH",
-        "CARD"
+        "cash",
+        "card"
       ]
     },
     "public.paymentstatus": {
       "name": "paymentstatus",
       "schema": "public",
       "values": [
-        "PAID",
-        "UNPAID",
-        "PART"
+        "paid",
+        "unpaid",
+        "part"
       ]
     },
     "public.role": {
       "name": "role",
       "schema": "public",
       "values": [
-        "USER",
-        "ADMIN",
-        "NURSE",
-        "DOCTOR",
-        "LAB_TECHNICIAN",
-        "PATIENT",
-        "CASHIER"
+        "user",
+        "admin",
+        "nurse",
+        "doctor",
+        "lab_technician",
+        "patient",
+        "cashier"
       ]
     },
     "public.status": {
